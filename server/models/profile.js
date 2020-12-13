@@ -94,20 +94,9 @@ module.exports = (sequelize, DataTypes) => {
     profile.hasMany(model.swipe);
 
     profile.hasMany(model.message, {
-      // through: 'messages',
-      // as: 'receivedMessage',
-      // foreignKey: 'receivedMessage',
       onDelete: 'cascade'
     });
 
-    // profile.hasMany(model.message, {
-    //   // through: 'messages',
-    //   as: 'sentMessage',
-    //   // foreignKey: 'sentMessage',
-    //   onDelete: 'cascade'
-    // });
-
   };
-
   return profile;
 };

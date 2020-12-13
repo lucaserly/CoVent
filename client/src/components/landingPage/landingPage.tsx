@@ -3,27 +3,20 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../types/combinedStoreTypes';
 import './landingPage.css'
 import { useDispatch } from 'react-redux'
-import { setUserName } from '../../redux/userState/userActions';
 import { TopBarLandingPage } from './topBarLandingPage/topBarLandingPage';
 import { Searchbar } from './searchbar/searchbar';
-import { ProfilePage } from '../ProfilePage/profilePage';
-import { getUserByIdDispatch } from '../../utils/userFunction';
-import { registerUserToDataBase } from '../../utils/userDatabaseFetch';
 import { Link } from 'react-router-dom';
-import { Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { getAllProfiles } from './../../utils/userDatabaseFetch';
-import { ProfileNew, CityAdd } from "../../types/userLucasTypes";
+import { ProfileNew } from "../../types/userLucasTypes";
 import { addLike } from './../../utils/systemFunction';
 
 
 export const LandingPage = (): ReactElement => {
   const dispatch = useDispatch()
-  const firebaseUser = useSelector((state: RootState) => state.system)
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const user = useSelector((state: RootState) => state.user)
-
-
   const [profiles, setProfiles] = useState<ProfileNew[]>([]);
 
   useEffect(() => {
@@ -31,7 +24,6 @@ export const LandingPage = (): ReactElement => {
       .then((list) => {
         const filteredList = list.filter((el) => el.id !== user.id)
         setProfiles(filteredList)
-        // filterProfilesToShowExceptSwipedOnes(user, list)
         if (currentDirection.length && user.profile && user.profile.id) {
           sendLikesToBackEnd(currentDirection, user.profile.id)
         }
@@ -59,7 +51,6 @@ export const LandingPage = (): ReactElement => {
 
   const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
     currentDir.forEach((el) => {
-      console.log('el profilePage.tsx, line 174 el: ', el);
       if (String(el.match(/[^\s]+/)) === 'right') {
         dispatch(addLike({
           profileId: profileId,
@@ -72,7 +63,6 @@ export const LandingPage = (): ReactElement => {
   return (
     <>
       <div className="landing_page_container">
-        {console.log('current user from landingpage', currentUser,)}
         <TopBarLandingPage />
       </div>
       {currentUser.id ?

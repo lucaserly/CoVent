@@ -3,7 +3,6 @@
 const userAttributes = ['id', 'firstName', 'lastName', 'email'];
 const profileAttributes = ['id', 'picture', 'description', 'age', 'gender', 'location', 'userId', 'hasNewMatch'];
 
-
 const findAllUsers = async (models) => {
   return await models.user.findAll({
     attributes: userAttributes,

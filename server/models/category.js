@@ -8,13 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     }
   });
-
   category.associate = model => {
     category.belongsToMany(model.profile, {
       through: 'categoryProfiles'
     });
   };
-
   return category;
 };
 

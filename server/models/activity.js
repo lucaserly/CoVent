@@ -7,12 +7,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   });
-
   activity.associate = model => {
-    // activity.belongsToMany(model.profile, { through: 'activityProfiles' });
     activity.belongsTo(model.category);
 
   };
-
   return activity;
 };

@@ -36,9 +36,6 @@ const addCity = async (req, res) => {
             }
             await profile[0].addCity(newCity);
             res.status(201).send(newCity);
-
-            // sending back new user object
-            // res.status(201).send(helperFuncs.findUser(models, profile.id));
           }
         } catch (error) {
           res.status(400).send({ error, message: 'Could not add city' });

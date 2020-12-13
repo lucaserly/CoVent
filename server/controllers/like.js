@@ -4,14 +4,10 @@ const models = require('../models');
 const helperFuncs = require('./../utils/helperFuncs');
 
 const like = async (req, res) => {
-  console.log('INSIDE LIKE-->');
-  console.log('req.body-->', req.body);
-  console.log('req.params-->', req.params);
 
   const { direction } = req.params;
   const { profileId } = req.body;
   const values = Object.values(req.body);
-
   const profile = await helperFuncs.findProfile(models, profileId, 'profile');
 
   if (values[0] === values[1]) {
@@ -47,16 +43,11 @@ const like = async (req, res) => {
           await profile[0].addMatched(givenLikeId, profileId);
           await targetProfile[0].addMatched(profileId, givenLikeId);
           const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
-          console.log('updatedUser-->', updatedUser);
-          // return res.status(201).send({ message: 'You got a new match' });
           return res.status(201).send(updatedUser);
         }
       }
-
       const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
-
       res.status(201).send(updatedUser);
-
     } else if (direction === 'receive') {
       const { receivedLikeId } = req.body;
       const receivedLikeProfile = await models.profile.findAll({
@@ -74,9 +65,7 @@ const like = async (req, res) => {
       if (duplicateLikeCheck.length > 0) {
         return res.status(500).send({ error: '500', message: 'Already received like' });
       }
-
       await profile[0].addReceivedLike(receivedLikeId, profileId);
-      // const liked = await models.liked.create({ profileId: profileId, likedId: receivedLikeId });
       res.status(201).send(profile);
 
     } else {

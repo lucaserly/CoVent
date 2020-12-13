@@ -28,8 +28,6 @@ export const TopBarLandingPageLogInButton = ({ setShowModal }: TopBarSignInButto
             profileId: currentUser.profile.id,
             swipeId: swipeValue[0]
           }
-          console.log('TOP BAR INSIDE HANDLE LOGOUT-->');
-          console.log('swipeToSend-->', swipeToSend);
           addSwipeToProfile(swipeToSend)
         }
       }
