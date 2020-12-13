@@ -11,22 +11,10 @@ At the crossroads between MeetUp and Tinder, CoVent is a web application that co
 
 ## Gettin started
 
-1. Clone the repo and open in your code editor of choice:
-```
-git clone https://github.com/lucaserly/CoVent.git
-```
-2. Install all required dependencies:
-```
-npm install
-```
-3. Run the server:
-```
-node server/index.js
-```
-4. Run the app:
-```
-cd client && npm start
-```
+1. Clone repo: ```git clone https://github.com/lucaserly/CoVent.git```
+2. Install all required dependencies: ```npm install```
+3. Run the server: ```node server/index.js```
+4. Run the app: ```cd client && npm start```
 
 ## Built with
 - [React](https://reactjs.org)
@@ -37,11 +25,5 @@ cd client && npm start
 - [Sequelize ORM](https://sequelize.org)
 
 ## Developers
-- Lucas Erlacher:
-  - [GitHub](https://github.com/lucaserly)
-  - [LinkedIn](https://www.linkedin.com/in/lucaserlacher/)
-  - [e-mail](mailto:l.erlacher@icloud.com)
-- Benjamin:
-  - [GitHub](https://github.com/ophren)
-  - [LinkedIn](https://www.linkedin.com/in/benjamin-bayet-56a36a144)
-  - [e-mail](mailto:ophren_lied@live.fr)
+- Lucas Erlacher: [GitHub](https://github.com/lucaserly) - [LinkedIn](https://www.linkedin.com/in/lucaserlacher/) - [e-mail](mailto:l.erlacher@icloud.com)
+- Benjamin: [GitHub](https://github.com/ophren) - [LinkedIn](https://www.linkedin.com/in/benjamin-bayet-56a36a144) - [e-mail](mailto:ophren_lied@live.fr)
