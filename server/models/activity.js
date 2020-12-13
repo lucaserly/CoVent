@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   activity.associate = model => {
-    // activity.belongsToMany(model.profile, { through: 'activityProfiles' });
     activity.belongsTo(model.category);
 
   };
