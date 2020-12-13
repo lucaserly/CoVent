@@ -7,7 +7,7 @@ import { userLogin, userLogOut, addSwipeToProfile } from '../../../../utils/syst
 
 const USER_LOGGED_IN_TEXT = 'Log In'
 const USER_LOGGED_OUT_TEXT = 'Log Out'
-const buttonClassName = 'log_in_button'
+
 
 interface TopBarSignInButtonProp {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>

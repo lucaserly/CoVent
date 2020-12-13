@@ -15,7 +15,6 @@ import { setDirection } from '../../redux/directionState/directionActions';
 
 export const ProfilePage = () => {
 
-  console.log('INSIDE PROFILE-->');
   const user = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const dispatch = useDispatch();
@@ -531,11 +530,6 @@ export const ProfilePage = () => {
           </div>
         </Modal>
 
-
-        {/* REUSED IDs FROM THE OTHER MODAL BELOW */}
-        {/* NEED CHANGE */}
-
-
         <div>
           <Modal show={showCityModal} onHide={handleCloseCity}>
             <div id="modal-background">
@@ -563,40 +557,7 @@ export const ProfilePage = () => {
             </div>
           </Modal>
         </div>
-
       </div>
-
-      {/* <div id="select-category-area">
-      <select id="mySelect" onChange={(e) => { handleCategorySubmit(e) }}>
-          {categories.map((el, i) => {
-            return <option key={i} value={el}>{el}</option>
-          })
-          }
-        </select>
-      </div> */}
-
-      {/* {console.log('user', user)} */}
-      {/* {user.profile && user.profile.swipes && console.log('user.profile.swipes-->', user.profile.swipes)} */}
-      {/* {console.log('currentDirection', currentDirection)} */}
-
-      {/* {user.profile && user.profile.id && currentDirection && currentDirection.length && sendLikesToBackEnd(currentDirection, user.profile.id)} */}
-
-      {/* <Link to={{
-        pathname: '/swiping',
-        state: {
-          profiles: filterSwipedProfiles(profiles, currentDirection),
-        }
-      }}>
-        <Button>Swiping</Button>
-      </Link> */}
-
-      {/* <Link to="/matches">
-        <Button>Matches</Button>
-      </Link> */}
-
-      {console.log('user.profile-->', user.profile)}
-    
-
     </div>
   )
 }

@@ -5,7 +5,6 @@ import { FormEvent, useState } from 'react'
 import { setUser } from "../../redux/userState/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Profile, User } from "../../types/userTypes"
-import userEvent from '@testing-library/user-event';
 import { userSignUp } from '../../utils/systemFunction';
 
 export const DescriptionForm = ({ setShowDescriptionModal }: any): JSX.Element => {

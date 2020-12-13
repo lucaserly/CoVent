@@ -9,8 +9,6 @@ import './swiping.css'
 import { setDirection } from '../../redux/directionState/directionActions';
 
 export const Swiping = (prop: any): any => {
-  console.log('INSIDE SWIPING-->');
-  console.log('prop-->', prop);
 
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
@@ -19,8 +17,6 @@ export const Swiping = (prop: any): any => {
 
   return (
     <>
-      <h1>Hello From Swiping</h1>
-      {console.log('profiles-->', profiles)}
       <div className="cards__container">
         {profiles && profiles.map((el: any) => {
           return <TinderCard
@@ -41,8 +37,6 @@ export const Swiping = (prop: any): any => {
         }
         )}
       </div>
-
-
     </>
   )
 }

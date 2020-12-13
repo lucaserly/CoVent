@@ -14,7 +14,6 @@ export const TopBarNewMatchesButton = () => {
 
 
   return (<div
-
     className="top_bar_new_matches_button_container" >
     {userIsLoggedIn && <button
       className={changeOnNewMatches}>{USER_MATCHES_BUTTON_TEXT}</button>}

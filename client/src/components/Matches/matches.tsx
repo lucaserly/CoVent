@@ -5,13 +5,9 @@ import { RootState } from '../../types/combinedStoreTypes';
 export const Matches = () => {
 
   const currentUser = useSelector((state: RootState) => state.user)
-  console.log('currentUser-->', currentUser);
 
   return (
     <>
-      {console.log('currentUser-->', currentUser)}
-      <h1>Hello From Matches</h1>
-
       {
         currentUser.profile &&
         currentUser.profile.matched &&

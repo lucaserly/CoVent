@@ -22,8 +22,7 @@ export const TopBarSignUpButton = ({ setShowModal }: TopBarSignUpButtonProp) => 
 
   return (
     <div>
-      <div className="top_bar_sign_up_button_container">
-      
+      <div className="top_bar_sign_up_button_container">  
         {showSignUp ??
           <>
             <button className="top_bar_sign_up_button"
@@ -35,8 +34,5 @@ export const TopBarSignUpButton = ({ setShowModal }: TopBarSignUpButtonProp) => 
         }
       </div>
     </div>
-
   )
-
-
 }

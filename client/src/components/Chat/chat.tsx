@@ -22,7 +22,6 @@ export const Chat = (props: any): JSX.Element => {
     if (currentUser.profile && currentUser.profile.id) {
       getMsgsByProfileIdAndReceiverId(currentUser.profile.id, props.location.state.id)
         .then((msgs: any) => {
-          console.log('msgs-->', msgs);
           setConversation(msgs)
         })
     }
@@ -30,12 +29,11 @@ export const Chat = (props: any): JSX.Element => {
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target;
-    setMessage(value)
+    setMessage(value);
   }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log('message-->', message);
     if (currentUser && currentUser.profile) {
       const messageToSend = {
         text: message,
@@ -59,7 +57,6 @@ export const Chat = (props: any): JSX.Element => {
 
   return (
     <div id="chat-area">
-      {console.log('conversation-->', conversation)}
     <div id="test">
       <form onSubmit={handleSubmit}>
         <input
@@ -75,7 +72,6 @@ export const Chat = (props: any): JSX.Element => {
     
       <div id="chat-messages-area" >
         {conversation.map((el, i) => {
-          console.log('el-->', el);
           return (
             <div id="chat-container" key={i}>
               <div id="userName">{

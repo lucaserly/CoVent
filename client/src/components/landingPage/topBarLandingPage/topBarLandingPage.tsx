@@ -16,7 +16,6 @@ export const TopBarLandingPage =
     const [showModalSignUp, setShowModalSignUp] = useState(false);
     const [showModalSignIn, setShowModalSignIn] = useState(false);
     const [showDescriptionModal, setShowDescriptionModal] = useState(false);
-
     const history = useHistory()
     const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
 
@@ -36,7 +35,6 @@ export const TopBarLandingPage =
         <TopBarNewMatchesButton />
         <TopBarSignUpButton setShowModal= {setShowModalSignUp}/>
         
-
         {showModalSignUp?
           <SignUpForm setShowModal={setShowModalSignUp} setShowDescriptionModal= {setShowDescriptionModal}/> : null }
         {showModalSignIn?
@@ -46,6 +44,7 @@ export const TopBarLandingPage =
         {userIsLoggedIn &&
           <button id="profile-btn" onClick={handleClick} >Profile</button>
         }
+        
         <TopBarLandingPageLogInButton setShowModal={setShowModalSignIn} />
       </div>
     </div>

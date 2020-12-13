@@ -1,6 +1,5 @@
 import './SignUpForm.css'
-import React, { FormEvent, useEffect, useState } from 'react';
-import { userSignUp } from "../../utils/systemFunction";
+import React, { FormEvent, useState } from 'react';
 import { setUser } from "../../redux/userState/userActions"
 import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../types/userTypes"
@@ -14,8 +13,6 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
     const [userCredentials, setUserCredentials] = useState<User>({ email: '', password: '', firstName: '', lastName: '' });
     const currentUser = useSelector((state: RootState) => state.user)
 
-    // useEffect(() => { console.log('useEffect') }, [currentUser])
-
     function handleChange(ev: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = ev.target;
         setUserCredentials(prevState => ({ ...prevState, [name]: value }));
@@ -27,23 +24,17 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        // 1 - Adding user data to Firebase
-
         const newUser: User = { ...currentUser,
             ...userCredentials}
 
-        // 2 - Creating new user
         dispatch(setUser(newUser));
         setShowModal(false);
         setShowDescriptionModal(true);
     }
 
-
     return (
         <div id="modal-main">
-
             <form id="modal" onSubmit={handleSubmit}>
-
             <div id= "welcome-title">Welcome to CoVent</div>
             <div id= "welcome-subtitle">Please register to join our international community of perverts</div>
 

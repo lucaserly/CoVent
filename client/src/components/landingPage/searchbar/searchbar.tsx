@@ -22,9 +22,7 @@ export const Searchbar = (): ReactElement => {
     getAllProfiles()
       .then((list) => {
         const filteredList = list.filter((el) => {
-          console.log(el.id, currentUser.id);
           return el.id !== currentUser.id})
-          console.log('filteredList', filteredList)
         setUsers(filteredList)
       })
   }, []);
@@ -49,7 +47,6 @@ export const Searchbar = (): ReactElement => {
 
   let renderUserWithCities;
   let renderAllUsers;
-
 
   if (users[0] && users[0].cities) {
     renderUserWithCities = (
@@ -77,7 +74,7 @@ export const Searchbar = (): ReactElement => {
 
         return <div key={i} id="user-box">
 
-          <div  className="image_container">
+          <div className="image_container">
             <img src={el.picture} className="searchbar_image" alt="profile pic" onClick={handleShow} />
             <div id="user-name">{temp}</div>
           </div>
@@ -86,23 +83,19 @@ export const Searchbar = (): ReactElement => {
             <div id="user-description-text">{el.description}</div>
             <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
           </div>
-
         </div>
-
       }})
     )
   }
 
   return (
     <div>
-      {/* {console.log('searchbar Current dir-->', currentDirection)} */}
-
-    <div id="searchbar_area">
-      <form>
-        <input id="main-searchbar" type="text" placeholder="Browse all cities..." value={city} onChange={handleChange} />
-      </form>
-      <button id="search-btn">Go</button>
-    </div>
+      <div id="searchbar_area">
+        <form>
+          <input id="main-searchbar" type="text" placeholder="Browse all cities..." value={city} onChange={handleChange} />
+        </form>
+        <button id="search-btn">Go</button>
+      </div>
 
       <div className="container">
         {!city ? renderAllUsers : renderUserWithCities}
@@ -113,19 +106,12 @@ export const Searchbar = (): ReactElement => {
           show={show} onHide={handleClose}>
           <Modal.Header>
             <Modal.Title>Inspect Profile</Modal.Title>
-            <Modal.Body>
-
-            </Modal.Body>
+            <Modal.Body></Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-                  </Button>
-
+              <Button variant="secondary" onClick={handleClose}>Close</Button>
             </Modal.Footer>
           </Modal.Header>
-
         </Modal>
-
       </div>
     </div>
   )
