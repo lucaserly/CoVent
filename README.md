@@ -1,17 +1,47 @@
 
-# Covent 
-### Connecting people through events
+### Covent 
 
+![](readme_images/Screenshot%202020-12-12%20at%2022.22.46.png)
 
-<b>#1 Project Description</b>
+Connecting people through events
 
 At the crossroads between MeetUp and Tinder, CoVent is a web application that connects people through events. Depending on your location, you can match with people based on their daily activities or on their interest in joining a specific event. CoVent offers a matching system and a chat room where you can discuss with your matches
 
-<b>#2 Screenshots</b>
+## Screenshots
 
-<img width="766" alt="Screenshot 2020-12-12 at 17 14 56" src="https://user-images.githubusercontent.com/31804969/102025732-45308e00-3d9a-11eb-9b03-ec61926554fa.png">
+## Gettin started
 
-<img width="600" height="300" alt="Screenshot 2020-12-13 at 23 18 27" src="https://user-images.githubusercontent.com/31804969/102025704-1ca89400-3d9a-11eb-8d5a-640ab6b62459.png">
+1. Clone the repo and open in your code editor of choice:
+```
+git clone https://github.com/lucaserly/CoVent.git
+```
+2. Install all required dependencies:
+```
+npm install
+```
+3. Run the server:
+```
+node server/index.js
+```
+4. Run the app:
+```
+cd client && npm start
+```
 
+## Built with
+- [React](https://reactjs.org)
+- [Redux](https://redux.js.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [Firebase](https://firebase.google.com)
+- [Express](https://expressjs.com)
+- [Sequelize ORM](https://sequelize.org)
 
-
+## Developers
+- Lucas Erlacher:
+  - [GitHub](https://github.com/lucaserly)
+  - [LinkedIn](https://www.linkedin.com/in/lucaserlacher/)
+  - [e-mail](mailto:l.erlacher@icloud.com)
+- Benjamin:
+  - [GitHub](https://github.com/ophren)
+  - [LinkedIn](https://www.linkedin.com/in/benjamin-bayet-56a36a144)
+  - [e-mail](mailto:ophren_lied@live.fr)
