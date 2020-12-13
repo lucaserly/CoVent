@@ -13,8 +13,8 @@ At the crossroads between MeetUp and Tinder, CoVent is a web application that co
 
 1. Clone repo: ```git clone https://github.com/lucaserly/CoVent.git```
 2. Install all required dependencies: ```npm install```
-3. Run the server: ```node server/index.js```
-4. Run the app: ```cd client && npm start```
+3. Run server: ```node server/index.js```
+4. Run app: ```cd client && npm start```
 
 ## Built with
 - [React](https://reactjs.org)
