@@ -15,7 +15,7 @@ app.use(router);
 (async function bootstrap () {
   await db.sequelize.sync();
   app.listen(PORT, () => {
-    console.log(`COEVENT listening at http://localhost:${PORT}`);
+    console.log(`COVENT listening at http://localhost:${PORT}`);
   });
 })();
 

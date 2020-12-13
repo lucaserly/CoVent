@@ -36,8 +36,4 @@ router.post('/message', messageController.createMessage);
 router.get('/messages', messageController.getAllMessages);
 router.get('/messages/:profileId/:receivedId', messageController.getConversation);
 
-// router.get('/messages/:profileId', messageController.getMsgsByProfileId);
-// router.get('/messages/received/:receivedId', messageController.getMsgsByReceivedId);
-// router.get('/messages/sent/:sentId', messageController.getMsgsBySentId);
-
 module.exports = router;

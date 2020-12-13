@@ -5,15 +5,12 @@ export interface SystemState {
   userFirebaseId: string | undefined,
   userEmail?:string,
   newUser?:boolean,
-
 }
 
 export interface SystemStateLoggedIn {
   loggedIn: boolean,
   userFirebaseId: string
 }
-
-///redux action Types
 
 export const SET_USER_FIREBASE_ID = 'SET_USER_FIREBASE_ID'
 export const SET_USER_EMAIL= 'SET_USER_EMAIL'

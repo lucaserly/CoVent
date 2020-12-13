@@ -8,7 +8,6 @@ import { userLogin, userLogOut, addSwipeToProfile } from '../../../../utils/syst
 const USER_LOGGED_IN_TEXT = 'Log In'
 const USER_LOGGED_OUT_TEXT = 'Log Out'
 
-
 interface TopBarSignInButtonProp {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -28,8 +27,6 @@ export const TopBarLandingPageLogInButton = ({ setShowModal }: TopBarSignInButto
             profileId: currentUser.profile.id,
             swipeId: swipeValue[0]
           }
-          console.log('TOP BAR INSIDE HANDLE LOGOUT-->');
-          console.log('swipeToSend-->', swipeToSend);
           addSwipeToProfile(swipeToSend)
         }
       }

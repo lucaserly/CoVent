@@ -16,22 +16,15 @@ function App() {
     <Provider store={store}>
       <Router>
         <Switch>
-
           <Route path="/profile" component={ProfilePage} />
-
           <Route path="/swiping" component={Swiping} />
-
           <Route path="/matches" component={Matches} />
-
           <Route path="/chats" component={Chats} />
-
           <Route path="/chat" component={Chat} />
-
           <Route exact path="/">
             <LandingPage />
             <RenderProfilesList />
           </Route>
-
         </Switch>
       </Router>
     </Provider>

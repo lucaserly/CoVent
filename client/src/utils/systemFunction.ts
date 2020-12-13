@@ -121,8 +121,6 @@ export const addCityToProfile = (city: CityAdd, user: User) => {
 };
 
 export const addLike = (like: any): any => {
-    console.log('SYSTEM FUNC ADD LIKE-->');
-    console.log('like-->', like);
     return (dispatch: any) => {
         giveLike(like)
             .then((newUser: any) => {

@@ -1,6 +1,5 @@
 import { City } from './userLucasTypes'
 
-
 export interface User {
   firebaseId?: string
   id?: number,
@@ -17,7 +16,6 @@ export interface Swipe {
 }
 
 export interface Profile {
-  // swipes: Profile | undefined
   swipes?: Swipe[],
   id?: number,
   picture?: string,
@@ -29,7 +27,7 @@ export interface Profile {
   hasNewMatch?: boolean
   likedProfile?: Profile[]
 
-  user?: User, //this is for the likedProfile structure
+  user?: User,
   receivedLike?: Profile[],
   matched?: Profile[],
   categories?: Category[],
@@ -37,7 +35,6 @@ export interface Profile {
   receivedLikes?: ReceivedLikes,
   matches?: Matches
   cities?: City[]
-
 }
 
 export interface Matches {
@@ -45,20 +42,20 @@ export interface Matches {
   updatedAt: string,
   matched: number,
   partner: number
-
 }
+
 export interface ReceivedLikes {
   createdAt: string,
   updatedAt: string,
   receivedLike: number,
   liked: number
 }
+
 export interface LikedProfiles {
   createdAt: string,
   updatedAt: string,
   likedProfile: number,
   givenLike: number
-
 }
 
 export interface Category {
@@ -86,19 +83,12 @@ export interface CategoryProfiles {
   profileId: number
 }
 
-// export interface Direction {
-//   directions?: string[]
-// }
-
-//redux action types
-
 export const SET_USER_FIREBASE_ID = 'SET_USER_FIREBASE_ID'
 export const SET_USER_NAME = 'SET_USER_NAME'
 export const SET_USER_AGE = 'SET_USER_AGE'
 export const SET_USER_PROFILE_PIC = 'SET_USER_PROFILE_PIC'
 export const SET_USER_HAS_MATCHES_TO_FALSE = 'SET_USER_HAS_MATCHES_TO_FALSE'
 export const SET_USER = "SET_USER"
-// export const SET_USER_AGE = 'SET_USER_AGE'
 export const SET_USER_DIRECTION = "SET_USER_DIRECTION"
 export const CLEAR_USER_DIRECTION = "CLEAR_USER_DIRECTION"
 
@@ -126,6 +116,5 @@ interface ClearUserDirection {
   type: typeof CLEAR_USER_DIRECTION,
   payload: []
 }
-
 
 export type UserActionTypes = SetUserAgeAction | SetUserNameAction | SetUserAction | SetUserDirection | ClearUserDirection

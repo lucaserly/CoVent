@@ -15,7 +15,6 @@ const createUser = async (req, res) => {
       .send({ error: '409', message: 'User already exists' });
   try {
     if (password === '') throw new Error();
-    // const hash = await bcrypt.hash(password, 10);
     const newUser = {
       ...req.body,
       password: password,
@@ -54,7 +53,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await models.user.findOne({ where: { email: email } });
-    // const validatedPass = await bcrypt.compare(password, user[0].password);
     const validatedPass = user.password === password ? true : false;
     if (!validatedPass) throw new Error();
     res.status(200).send(user);

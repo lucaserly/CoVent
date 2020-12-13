@@ -4,9 +4,6 @@ const models = require('../models');
 const helperFuncs = require('./../utils/helperFuncs');
 
 const like = async (req, res) => {
-  console.log('INSIDE LIKE-->');
-  console.log('req.body-->', req.body);
-  console.log('req.params-->', req.params);
 
   const { direction } = req.params;
   const { profileId } = req.body;
@@ -47,8 +44,6 @@ const like = async (req, res) => {
           await profile[0].addMatched(givenLikeId, profileId);
           await targetProfile[0].addMatched(profileId, givenLikeId);
           const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
-          console.log('updatedUser-->', updatedUser);
-          // return res.status(201).send({ message: 'You got a new match' });
           return res.status(201).send(updatedUser);
         }
       }
@@ -76,7 +71,6 @@ const like = async (req, res) => {
       }
 
       await profile[0].addReceivedLike(receivedLikeId, profileId);
-      // const liked = await models.liked.create({ profileId: profileId, likedId: receivedLikeId });
       res.status(201).send(profile);
 
     } else {

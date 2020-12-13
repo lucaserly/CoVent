@@ -89,8 +89,6 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     if (user.profile && user.profile.receivedLike && user.profile.likedProfile && user.profile.matched) {
-      console.log('USE EFFECT-->');
-      console.log('user.profile.matched-->', user.profile.matched);
       setReceivedLikes(user.profile.receivedLike)
       setLikedProfiles(user.profile.likedProfile)
       setMatches(user.profile.matched)
@@ -98,12 +96,8 @@ export const ProfilePage = () => {
 
     getAllProfiles()
       .then((list) => {
-        // console.log('list-->', list);
-
         const filteredList = list.filter((el) => el.id !== user.id)
-        // console.log('filteredList-->', filteredList);
         setProfiles(filteredList)
-        // filterProfilesToShowExceptSwipedOnes(user, list)
         if (currentDirection.length && user.profile && user.profile.id) {
           sendLikesToBackEnd(currentDirection, user.profile.id)
         }
@@ -164,42 +158,25 @@ export const ProfilePage = () => {
   };
 
   const handleCategorySubmit = (ev: any): any => {
-    // console.log('e.target.value-->', ev.target.value);
     setCategory(ev.target.value)
     const categoryToSend = {
       profileId: user.profile && user.profile.id,
       name: ev.target.value
     }
-    // console.log('categoryToSend-->', categoryToSend);
     dispatch(addCategoryToProfile(categoryToSend, user))
   };
 
   const filterSwipedProfiles = (profiles: ProfileNew[], currentDir: string[]): any => {
-
-    console.log('filterSwipedProfiles PROFILES FUNCTION-->');
-    console.log('profiles-->', profiles);
-    console.log('currentDir-->', currentDir);
-    // filter profiles according to selected city from user
     const filteredByCity = filterByCity(profiles);
-    console.log('filteredByCity-->', filteredByCity);
 
-    // filter the above list based on selected activity from user
     const filteredByCityAndActivity = filterByActivity(filteredByCity)
-    console.log('filteredByCityAndActivity-->', filteredByCityAndActivity);
 
-    // remove yourself from the list
     if (filteredByCityAndActivity) {
       const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: any) => el.id !== user.id)
-
-      // console.log('INSIDE FILTERBYCITY AND ACTIVITY-->');
-      // console.log('filteredByCityActivitySelf-->', filteredByCityActivitySelf);
-
 
       let filteredByPreviousSwipes = [];
 
       if (user.profile && user.profile.swipes && user.profile.swipes.length > 0) {
-        console.log('user.profile.swipes-->', user.profile.swipes);
-        console.log('user.profile.swipes.length-->', user.profile.swipes.length);
         for (let a = 0; a < filteredByCityActivitySelf.length; a++) {
           let flag;
           for (let c = 0; c < user.profile.swipes.length; c++) {
@@ -219,8 +196,6 @@ export const ProfilePage = () => {
         filteredByPreviousSwipes = filteredByCityActivitySelf
       }
 
-      console.log('filteredByPreviousSwipes-->', filteredByPreviousSwipes);
-
       if (filteredByPreviousSwipes.length > 0 && (user.profile && user.profile.swipes && user.profile.swipes.length > 0 || currentDir.length > 0)) {
         const result = [];
         for (let i = 0; i < filteredByPreviousSwipes.length; i++) {
@@ -237,17 +212,12 @@ export const ProfilePage = () => {
             flag = false;
           }
         }
-        // console.log('filterSwipedProfiles result -->', result);
         return result;
 
       }
       else {
-        // here i would have to add a check and compare it to send profiles that are not part of the matches already
-        //
         const filteredByNotMatchedYet = [];
         if (user && user.profile && user.profile.matched && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes.length > 0) {
-          console.log('----------------> INSIDE IF USER HAS MATCHES');
-
           for (let i = 0; i < filteredByCityAndActivity.length; i++) {
             let flag;
             for (let a = 0; a < user.profile.matched.length; a++) {
@@ -262,10 +232,8 @@ export const ProfilePage = () => {
               flag = false;
             }
           }
-          console.log('filteredByNotMatchedYet-->', filteredByNotMatchedYet);
           return filteredByNotMatchedYet;
         } else {
-          console.log('filteredByPreviousSwipes-->', filteredByPreviousSwipes);
           return filteredByPreviousSwipes
         }
       }
@@ -273,55 +241,34 @@ export const ProfilePage = () => {
   };
 
   const filterByCity = (profiles: ProfileNew[]): any => {
-    // console.log('filterByCity-->');
-    // console.log('profiles-->', profiles);
-    // console.log('user-->', user);
-
-    // console.log('user.profile.cities-->', user.profile);
     if (user && user.profile && user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name) {
-      // console.log('profiles-->', profiles);
-      // console.log('profiles.cities-->', profiles.cities);
+
       const res = profiles.filter((el) => {
-        // console.log('el-->', el);
+
         if (user && user.profile && user.profile.cities && user.profile.cities[0].name && el && el.cities && el.cities.length > 0) {
           if (el.cities && el.cities[0] && el.cities[0].name && user && user.profile && user.profile.cities && user.profile.cities[0]) {
             return el.cities[0].name === user.profile.cities[0].name;
           }
-          // console.log('el.cities[0].name-->', el.cities[0].name);
-          // console.log('el.cities[0].name === user.profile.ciities[0].name-->', el.cities[0].name === user.profile.cities[0].name);
-
-          // console.log('user.profile.cities[0].name-->', user.profile.cities[0].name);
         }
       })
-      // console.log('filterByCity res -->', res);
       return res;
     }
   }
 
   const filterByActivity = (profiles: ProfileNew[]): any => {
-    // console.log('filterByActivity-->',);
-    // console.log('profiles-->', profiles);
     if (profiles) {
       const res = profiles.filter((el) => {
         if (user && user.profile && user.profile.categories && user.profile.categories.length > 0 && el.categories && el.categories.length > 0) {
-          // console.log('el.categories-->', el.categories);
-          // console.log('el.categories[el.categories.length - 1].name-->', el.categories[el.categories.length - 1].name);
-          // console.log('user.profile.categories[categories.length - 1].name-->', user.profile.categories[user.profile.categories.length - 1].name);
           return el.categories[0].name === user.profile.categories[user.profile.categories.length - 1].name
         }
       })
-      // console.log('res from filter by activity-->', res);
       return res;
     }
   }
 
   const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
-    // console.log('profile page inside sendlikestoback end-->');
-    // console.log('currentDir-->', currentDir);
-    // console.log('profileId-->', profileId);
 
     currentDir.forEach((el) => {
-      // console.log('el profilePage.tsx, line 174 el: ', el);
       if (String(el.match(/[^\s]+/)) === 'right') {
         dispatch(addLike({
           profileId: profileId,
@@ -332,8 +279,6 @@ export const ProfilePage = () => {
   }
 
   const filterNotMatchedYet = (obj: any): any => {
-    // console.log('FILTERNOTMATCHED YET-->');
-    // console.log('obj-->', obj);
 
     const filteredByNotMatchedYet = [];
     if (user.profile && user.profile.matched && obj && obj.length > 0) {
@@ -352,17 +297,12 @@ export const ProfilePage = () => {
         }
       }
     }
-    // console.log('filteredByNotMatchedYet-->', filteredByNotMatchedYet);
     return filteredByNotMatchedYet;
   }
 
   return (
 
     <div id="profile_body">
-      {/* {console.log('likedProfiles-->', likedProfiles)} */}
-      {/* {console.log('user.profile-->', user.profile)} */}
-      {console.log('user.profile.matched-->', user && user.profile && user.profile.matched)}
-      {console.log('matches-->', matches)}
       <div id="sidebar-swipes">
         <div id="sidebar-swipes-title">Swipe by categories</div>
         <div id="sidebar-swipes-category-list">
@@ -432,14 +372,12 @@ export const ProfilePage = () => {
                 {user && user.profile && user.profile.likedProfile &&
                   user.profile.likedProfile[0] && user.profile.likedProfile[0].user
                   && filterNotMatchedYet(user.profile.likedProfile).map((el: any, i: any) => {
-                    // { console.log('RENDER FILTER NOT MATCHED YET-->') }
                     return (
                       <div id="invitor-area" key={i}>
                         <img className="invitor-img" src={el.picture} />
                         <div id="invitor-details">
                           <div className="invitor-name" >{el.user?.firstName}</div>
                           <div className="invitor-city" >{el.location}</div>
-
                           <button id="invitor-view-profile-btn">View profile</button>
                         </div>
                       </div>
@@ -447,7 +385,6 @@ export const ProfilePage = () => {
                   })}
               </div>
             </div>
-
 
             <div className="invitations-container" id="invitations-received">
               <div className="invitations-container-title">They have invited you</div>
@@ -474,7 +411,6 @@ export const ProfilePage = () => {
                             setMatches((prevList: any) => [...prevList, el])
                             dispatch(setDirection([`right id:${el.id}`]))
                             if (user && user.profile) {
-                              console.log('currentDirection-->', currentDirection);
                               sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
                             }
                           }}>√</Button>
