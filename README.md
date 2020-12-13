@@ -1,4 +1,5 @@
-### CoVent
+div style="font-family:verdana color:blue">CoVent</div>
+
 Connecting people through events
 
 <b>#1 Project Description</b>
