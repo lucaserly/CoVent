@@ -1,6 +1,5 @@
-###CoVent
-
-Connecting people through events
+### CoVent
+# Connecting people through events
 
 <b>#1 Project Description</b>
 
