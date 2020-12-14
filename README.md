@@ -11,7 +11,7 @@ At the crossroads between MeetUp and Tinder, CoVent is a web application that co
 
 
 
-## Gettin started
+## Getting started
 
 1. Clone repo: ```git clone https://github.com/lucaserly/CoVent.git```
 2. Install all required dependencies: ```npm install```
