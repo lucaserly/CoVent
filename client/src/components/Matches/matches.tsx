@@ -16,7 +16,6 @@ export const Matches = () => {
             <img src={el.picture} className="searchbar_image" alt="profile pic" />
           </div>
         )}
-
     </>
   )
 }

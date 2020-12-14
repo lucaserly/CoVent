@@ -4,7 +4,7 @@ import { RootState } from '../../types/combinedStoreTypes';
 import { Link } from 'react-router-dom';
 import './chats.css';
 
-export const Chats = () => {
+export const Chats = (): JSX.Element => {
 
   const currentUser = useSelector((state: RootState) => state.user)
 

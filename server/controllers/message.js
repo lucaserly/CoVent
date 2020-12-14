@@ -1,9 +1,7 @@
 'use strict';
 
 const models = require('./../models/');
-const helperFuncs = require('./../utils/helperFuncs');
 const { Op } = require("sequelize");
-const profile = require('./profile');
 
 const createMessage = async (req, res) => {
   const { profileId, targetId, text } = req.body;

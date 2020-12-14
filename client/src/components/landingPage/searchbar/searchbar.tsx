@@ -11,9 +11,7 @@ export const Searchbar = (): ReactElement => {
 
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
-
   const dispatch = useDispatch();
-
   const [users, setUsers] = useState<ProfileNew[]>([]);
   const [city, setCity] = useState('');
   const [show, setShow] = useState(false);
@@ -53,38 +51,41 @@ export const Searchbar = (): ReactElement => {
       users.filter(user => user.cities && user.cities.length
         && user.cities[0].name.toLowerCase().includes(city)).map((el, i) => {
           if (el && el.id) {
-          return <div key={i} className="image_container">
-            <img src={el.picture} className="searchbar_image" alt="profile pic" />
-            <div id="lp-profile-description">
-              <div id="user-description-text">{el.description}</div>
-              <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
+            return <div key={i} className="image_container">
+              <img src={el.picture} className="searchbar_image" alt="profile pic" />
+              <div id="lp-profile-description">
+                <div id="user-description-text">{el.description}</div>
+                <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
+              </div>
             </div>
-          </div>
           }
         }
-      )
+        )
     )
   }
 
   if (users[0]) {
     renderAllUsers = (
       users.map((el, i) => {
-        if(el.user) {
-        const temp = el.user.firstName?.charAt(0).toUpperCase() + el.user.firstName?.slice(1);
+        if (el.user) {
+          const temp = el.user.firstName?.charAt(0).toUpperCase() + el.user.firstName?.slice(1);
 
-        return <div key={i} id="user-box">
+          return <div key={i} id="user-box">
 
-          <div className="image_container">
-            <img src={el.picture} className="searchbar_image" alt="profile pic" onClick={handleShow} />
-            <div id="user-name">{temp}</div>
+            <div className="image_container">
+              <img src={el.picture} className="searchbar_image" alt="profile pic" onClick={handleShow} />
+              <div id="user-name">{temp}</div>
+            </div>
+
+            <div id="lp-profile-description">
+              <div id="user-description-text">{el.description}</div>
+              <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
+            </div>
+
           </div>
 
-          <div id="lp-profile-description">
-            <div id="user-description-text">{el.description}</div>
-            <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
-          </div>
-        </div>
-      }})
+        }
+      })
     )
   }
 

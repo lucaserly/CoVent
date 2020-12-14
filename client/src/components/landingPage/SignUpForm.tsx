@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../types/userTypes"
 import { RootState } from '../../types/combinedStoreTypes';
 
-
-
 export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.Element => {
 
     const dispatch = useDispatch();
@@ -20,12 +18,15 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
 
     function closeModal() {
         setShowModal(false);
-    } 
+    }
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        const newUser: User = { ...currentUser,
-            ...userCredentials}
+
+        const newUser: User = {
+            ...currentUser,
+            ...userCredentials
+        }
 
         dispatch(setUser(newUser));
         setShowModal(false);

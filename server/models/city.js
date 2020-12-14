@@ -9,12 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: ''
     }
   });
-
   city.associate = model => {
     city.belongsToMany(model.profile, {
       through: 'cityProfiles'
     });
   };
-
   return city;
 };

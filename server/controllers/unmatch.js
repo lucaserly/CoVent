@@ -8,7 +8,6 @@ const unmatch = async (req, res) => {
 
   const profile = await helperFuncs.findProfile(models, profileId, 'profile');
   const targetProfile = await helperFuncs.findProfile(models, givenLikeId, 'profile');
-  
   if (profile.length === 0) {
     return res.status(500).send({ error: '500', message: 'Profile not available' });
   }
@@ -56,12 +55,10 @@ const unmatch = async (req, res) => {
   if (profileId === givenLikeId) {
     return res.status(500).send({ error: '500', message: 'You cannot like yourself' });
   }
-
   await profile[0].removeLikedProfile(givenLikeId, profileId);
   await targetProfile[0].removeReceivedLike(profileId, givenLikeId);
   await profile[0].removeMatched(givenLikeId, profileId);
   await targetProfile[0].removeMatched(profileId, givenLikeId);
-
   const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
   res.send(updatedUser);
 };

@@ -13,7 +13,7 @@ import { addLike } from './../../utils/systemFunction';
 import { setUser } from '../../redux/userState/userActions';
 import { setDirection } from '../../redux/directionState/directionActions';
 
-export const ProfilePage = () => {
+export const ProfilePage = (): JSX.Element => {
 
   const user = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
@@ -25,13 +25,12 @@ export const ProfilePage = () => {
     age: '',
     gender: '',
     location: '',
-  }
+  };
 
   const initialStateCity: CityAdd = {
     profileId: 0,
     name: ''
-  }
-
+  };
 
   const categories = [
     'Athletics',
@@ -80,7 +79,6 @@ export const ProfilePage = () => {
   const [city, setCity] = useState('');
   const [category, setCategory] = useState('');
   const [showCategoryModal, setShowCategoryModal] = useState(false);
-
   const [receivedLikes, setReceivedLikes] = useState<any>([]);
   const [likedProfiles, setLikedProfiles] = useState<any>([]);
   const [matches, setMatches] = useState<any>([]);
@@ -168,14 +166,11 @@ export const ProfilePage = () => {
 
   const filterSwipedProfiles = (profiles: ProfileNew[], currentDir: string[]): any => {
     const filteredByCity = filterByCity(profiles);
-
     const filteredByCityAndActivity = filterByActivity(filteredByCity)
 
     if (filteredByCityAndActivity) {
       const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: any) => el.id !== user.id)
-
       let filteredByPreviousSwipes = [];
-
       if (user.profile && user.profile.swipes && user.profile.swipes.length > 0) {
         for (let a = 0; a < filteredByCityActivitySelf.length; a++) {
           let flag;
@@ -213,7 +208,6 @@ export const ProfilePage = () => {
           }
         }
         return result;
-
       }
       else {
         const filteredByNotMatchedYet = [];
@@ -242,9 +236,7 @@ export const ProfilePage = () => {
 
   const filterByCity = (profiles: ProfileNew[]): any => {
     if (user && user.profile && user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name) {
-
       const res = profiles.filter((el) => {
-
         if (user && user.profile && user.profile.cities && user.profile.cities[0].name && el && el.cities && el.cities.length > 0) {
           if (el.cities && el.cities[0] && el.cities[0].name && user && user.profile && user.profile.cities && user.profile.cities[0]) {
             return el.cities[0].name === user.profile.cities[0].name;
@@ -267,7 +259,6 @@ export const ProfilePage = () => {
   }
 
   const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
-
     currentDir.forEach((el) => {
       if (String(el.match(/[^\s]+/)) === 'right') {
         dispatch(addLike({
@@ -279,7 +270,6 @@ export const ProfilePage = () => {
   }
 
   const filterNotMatchedYet = (obj: any): any => {
-
     const filteredByNotMatchedYet = [];
     if (user.profile && user.profile.matched && obj && obj.length > 0) {
       for (let i = 0; i < obj.length; i++) {
@@ -314,9 +304,7 @@ export const ProfilePage = () => {
       </div>
 
       <div className="profile_page_content">
-
         <div className="profile_page_header_container">
-
           <div id="profile-infos-picture">
             {user && user.profile && user.profile.picture ? <div className="profile_page_image_container">
               <img className="profile_page_image" src={user.profile?.picture} alt="profile" />
@@ -494,6 +482,29 @@ export const ProfilePage = () => {
           </Modal>
         </div>
       </div>
+
+      <Link to={{
+        pathname: '/swiping',
+        state: {
+          profiles: filterSwipedProfiles(profiles, currentDirection),
+        }
+      }}>
+        <Button>Swiping</Button>
+      </Link>
+
+      <Link to="/matches">
+        <Button>Matches</Button>
+      </Link>
+
+      <Link to={{
+        pathname: '/chats',
+        state: {
+          matches: user.profile && user.profile.matched
+        }
+      }}>
+        <Button>Chats</Button>
+      </Link>
+
     </div>
   )
 }

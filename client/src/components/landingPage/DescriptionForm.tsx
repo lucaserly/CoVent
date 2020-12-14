@@ -10,7 +10,6 @@ import { userSignUp } from '../../utils/systemFunction';
 export const DescriptionForm = ({ setShowDescriptionModal }: any): JSX.Element => {
     const currentUser = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch();
-
     const [newUserDescription, setNewUserDescription] = useState<Profile>({ gender: '', age: '', location: '' });
 
     function handleChange(ev: React.ChangeEvent<HTMLInputElement>) {

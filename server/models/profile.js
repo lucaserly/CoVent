@@ -97,6 +97,5 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade'
     });
   };
-
   return profile;
 };

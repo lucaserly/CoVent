@@ -10,25 +10,24 @@ import SignUpForm from '../SignUpForm'
 import SignInForm from '../SignInForm'
 import DescriptionForm from '../DescriptionForm'
 
-export const TopBarLandingPage =
-  (): ReactElement => {
+export const TopBarLandingPage = (): ReactElement => {
 
-    const [showModalSignUp, setShowModalSignUp] = useState(false);
-    const [showModalSignIn, setShowModalSignIn] = useState(false);
-    const [showDescriptionModal, setShowDescriptionModal] = useState(false);
-    const history = useHistory()
-    const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
+  const [showModalSignUp, setShowModalSignUp] = useState(false);
+  const [showModalSignIn, setShowModalSignIn] = useState(false);
+  const [showDescriptionModal, setShowDescriptionModal] = useState(false);
+  const history = useHistory()
+  const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
 
-    function handleClick() {
-      history.push("/profile")
-    }
+  function handleClick() {
+    history.push("/profile")
+  }
 
-    return (
+  return (
     <div className="top_bar_landing_page_container">
-      
+
       <div id="logo-area">
-        <span id= "app-logo">CO</span><span id="v">V</span><span id="app-logo">ENT</span>
-        <div id ="app-catchphrase">Connecting people through events</div>
+        <span id="app-logo">CO</span><span id="v">V</span><span id="app-logo">ENT</span>
+        <div id="app-catchphrase">Connecting people through events</div>
       </div>
 
       <div id="top-right-buttons-area">
@@ -48,5 +47,5 @@ export const TopBarLandingPage =
         <TopBarLandingPageLogInButton setShowModal={setShowModalSignIn} />
       </div>
     </div>
-    )
-  }
+  )
+}

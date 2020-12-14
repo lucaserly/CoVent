@@ -5,13 +5,10 @@ import './TopBarNewMatchesButton.css'
 
 const USER_MATCHES_BUTTON_TEXT = 'Matches'
 
-
 export const TopBarNewMatchesButton = () => {
   const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
   const userHasNewMatches = useSelector((state: RootState) => state.user.profile?.hasNewMatch)
   const changeOnNewMatches = userHasNewMatches ? 'hasNewMatches' : 'noNewMatches'
-
-
 
   return (<div
     className="top_bar_new_matches_button_container" >

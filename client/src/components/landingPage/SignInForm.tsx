@@ -1,33 +1,32 @@
 import './SignInForm.css';
 import React, { FormEvent, useState } from 'react';
-import {userLogin} from "../../utils/systemFunction";
+import { userLogin } from "../../utils/systemFunction";
 import { useDispatch } from "react-redux";
-import { lookupService } from 'dns';
 
-export const SignInForm = ({setShowModal}: any) : JSX.Element => {
+export const SignInForm = ({ setShowModal }: any): JSX.Element => {
 
     const dispatch = useDispatch();
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
-    const creds = {email: "", password: ""};
+    const creds = { email: "", password: "" };
 
-    const handleUserName = (ev : React.ChangeEvent<HTMLInputElement>) => {
+    const handleUserName = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(ev.target.value);
     }
 
-    const handlePassword = (ev : React.ChangeEvent<HTMLInputElement>) => {
+    const handlePassword = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setUserPassword(ev.target.value);
     }
 
-    function closeModal () {
+    function closeModal() {
         setShowModal(false);
     }
 
-    function handleSubmit (e : FormEvent) {
+    function handleSubmit(e: FormEvent) {
         e.preventDefault();
         creds.email = userName;
         creds.password = userPassword;
-        dispatch(userLogin(creds)); 
+        dispatch(userLogin(creds));
         setShowModal(false);
     }
 
@@ -35,23 +34,23 @@ export const SignInForm = ({setShowModal}: any) : JSX.Element => {
         <div id="modal-main">
             <form id="modal" onSubmit={handleSubmit}>
 
-                <div id= "welcome-title">Welcome to CoVent</div>
-                <div id= "welcome-subtitle">Ready to start a new adventure and to meet incredible new people?</div>
+                <div id="welcome-title">Welcome to CoVent</div>
+                <div id="welcome-subtitle">Ready to start a new adventure and to meet incredible new people?</div>
 
-                    <input 
-                        id="inputUserEmail" 
-                        placeholder="Enter email" 
-                        onChange={(ev: React.ChangeEvent<HTMLInputElement>,): void =>
+                <input
+                    id="inputUserEmail"
+                    placeholder="Enter email"
+                    onChange={(ev: React.ChangeEvent<HTMLInputElement>,): void =>
                         handleUserName(ev)} >
-                    </input>
+                </input>
 
-                    <input 
-                        id="inputUserPassword"     
-                        placeholder="Enter password" 
-                        onChange={(ev: React.ChangeEvent<HTMLInputElement>,): void =>
-                            handlePassword(ev)} > 
-                    </input>
-    
+                <input
+                    id="inputUserPassword"
+                    placeholder="Enter password"
+                    onChange={(ev: React.ChangeEvent<HTMLInputElement>,): void =>
+                        handlePassword(ev)} >
+                </input>
+
                 <button id="submitSignUp">Submit</button>
                 <div id="toggleToSignUp">No account yet? <span>Sign Up</span></div>
                 <div id="close-modal" onClick={closeModal}>close</div>

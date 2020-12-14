@@ -7,11 +7,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   });
-
   activity.associate = model => {
     activity.belongsTo(model.category);
 
   };
-
   return activity;
 };

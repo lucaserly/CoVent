@@ -1,6 +1,5 @@
 'use strict';
 
-const bcrypt = require('bcrypt');
 const models = require('../models');
 const helperFuncs = require('./../utils/helperFuncs');
 

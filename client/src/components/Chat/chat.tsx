@@ -53,7 +53,7 @@ export const Chat = (props: any): JSX.Element => {
       setConversation([...conversation, messageTosave])
       setMessage('')
     }
-  }
+  };
 
   return (
     <div id="chat-area">

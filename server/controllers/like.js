@@ -8,7 +8,6 @@ const like = async (req, res) => {
   const { direction } = req.params;
   const { profileId } = req.body;
   const values = Object.values(req.body);
-
   const profile = await helperFuncs.findProfile(models, profileId, 'profile');
 
   if (values[0] === values[1]) {
@@ -47,11 +46,8 @@ const like = async (req, res) => {
           return res.status(201).send(updatedUser);
         }
       }
-
       const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
-
       res.status(201).send(updatedUser);
-
     } else if (direction === 'receive') {
       const { receivedLikeId } = req.body;
       const receivedLikeProfile = await models.profile.findAll({
@@ -69,7 +65,6 @@ const like = async (req, res) => {
       if (duplicateLikeCheck.length > 0) {
         return res.status(500).send({ error: '500', message: 'Already received like' });
       }
-
       await profile[0].addReceivedLike(receivedLikeId, profileId);
       res.status(201).send(profile);
 
