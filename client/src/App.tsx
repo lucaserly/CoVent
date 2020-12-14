@@ -10,7 +10,6 @@ import { Chats } from './components/Chats/chats';
 import { Matches } from './components/Matches/matches';
 import { Swiping } from './components/Swiping/swiping'
 
-
 function App() {
   return (
     <Provider store={store}>

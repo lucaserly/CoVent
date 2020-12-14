@@ -36,7 +36,7 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
         <div id="modal-main">
             <form id="modal" onSubmit={handleSubmit}>
             <div id= "welcome-title">Welcome to CoVent</div>
-            <div id= "welcome-subtitle">Please register to join our international community of perverts</div>
+            <div id= "welcome-subtitle">Please register to join our international community</div>
 
             <input
                 className="registration-input"
