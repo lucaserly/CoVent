@@ -28,4 +28,4 @@ At the crossroads between MeetUp and Tinder, CoVent is a web application that co
 
 ## Developers
 - Lucas Erlacher: [GitHub](https://github.com/lucaserly) - [LinkedIn](https://www.linkedin.com/in/lucaserlacher/) - [e-mail](mailto:l.erlacher@icloud.com)
-- Benjamin: [GitHub](https://github.com/ophren) - [LinkedIn](https://www.linkedin.com/in/benjamin-bayet-56a36a144) - [e-mail](mailto:ophren_lied@live.fr)
+- Benjamin Bayet: [GitHub](https://github.com/ophren) - [LinkedIn](https://www.linkedin.com/in/benjamin-bayet-56a36a144) - [e-mail](mailto:ophren_lied@live.fr)
