@@ -16,7 +16,6 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
         setUserCredentials(prevState => ({ ...prevState, [name]: value }));
     }
 
-
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const newUser: User = {

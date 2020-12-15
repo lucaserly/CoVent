@@ -18,10 +18,6 @@ export const SignInForm = ({ setShowModal }: any): JSX.Element => {
         setUserPassword(ev.target.value);
     }
 
-    function closeModal() {
-        setShowModal(false);
-    }
-
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
         creds.email = userName;
@@ -53,7 +49,7 @@ export const SignInForm = ({ setShowModal }: any): JSX.Element => {
 
                 <button id="submitSignUp">Submit</button>
                 <div id="toggleToSignUp">No account yet? <span>Sign Up</span></div>
-                <div id="close-modal" onClick={closeModal}>close</div>
+                <div id="close-modal" onClick={() => {setShowModal(false)}}>close</div>
             </form>
         </div>
     )
