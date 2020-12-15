@@ -10,14 +10,18 @@ import { Button } from 'react-bootstrap';
 import { getAllProfiles } from './../../utils/userDatabaseFetch';
 import { ProfileNew } from "../../types/userLucasTypes";
 import { addLike } from './../../utils/systemFunction';
+import { LikeProfile } from './likeProfile';
 
 export const LandingPage = (): ReactElement => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
+  const [city, setCity] = useState <string>('');
   const user = useSelector((state: RootState) => state.user)
   const [profiles, setProfiles] = useState<ProfileNew[]>([]);
 
+  // Delete the one in the child component, pass this one + make sure it tracks the changes in cities so that it updates automatically
+  
   useEffect(() => {
     getAllProfiles()
       .then((list) => {
@@ -64,7 +68,8 @@ export const LandingPage = (): ReactElement => {
       <div className="landing_page_container">
         <TopBarLandingPage />
       </div>
-      <Searchbar key={Math.random()} />
+      <Searchbar city = {city} setCity= {setCity} />
+      <LikeProfile city= {city}/>
 
       {currentUser.id ?
         <>
