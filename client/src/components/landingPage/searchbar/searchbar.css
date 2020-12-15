@@ -16,6 +16,7 @@ body {
 }
 
 .image_container {
+ 
   justify-content: space-around;
   max-width: 500px;
   display: flex;
@@ -36,19 +37,19 @@ body {
 }
 
 #searchbar_area {
-  margin-top: 4%;
-  margin-bottom: 3%;
+  margin-top: 5%;
+  margin-bottom: 5%;
   display: flex;
   justify-content: center;
 }
 
 #main-searchbar {
-  padding-left: 10px;
-  width: 400px;
-  border: 1px solid rgb(177, 177, 177);
+  padding-left: 14px;
+  width: 450px;
+  border: 1px solid rgb(219, 219, 219);
   height: 25px;
   font-style: italic;
-  border-radius: 3px;
+  border-radius: 16px;
 }
 
 #search-btn {
@@ -58,7 +59,7 @@ body {
   cursor: pointer;
   color: white;
   background-color: rgb(59, 59, 59);
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 #search-btn:hover {
@@ -66,9 +67,11 @@ body {
 }
 
 #user-box {
+  border-bottom: 3px solid rgb(247, 247, 247); 
   margin-top: 2%;
   margin-right: 2%; 
   margin-bottom: 3%;
+  padding-bottom: 3%;
   display: flex;
   justify-content: flex-start;
 }
@@ -106,14 +109,13 @@ body {
   margin-top: 3%;
   height: 30px;
   width: 100px;
-  border-radius: 3px;
+  border-radius: 5px;
   border: none;
   color: white;
-  background-color: rgb(56, 56, 56);
+  background-color: rgb(63, 63, 63);
   cursor: pointer;
 }
 
 #invitation-btn:hover {
-  background-color: rgb(56, 56, 56);
-  color: white;
+  transform: scale(0.90);
 }
