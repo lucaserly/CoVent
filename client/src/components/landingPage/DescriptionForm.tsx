@@ -19,8 +19,10 @@ export const DescriptionForm = ({ setShowDescriptionModal }: any): JSX.Element =
 
     function handleDescription(e: FormEvent) {
         e.preventDefault()
-        const newUser: User = {
-            ...currentUser, profile:
+        const newUser: User = 
+        {
+            ...currentUser, 
+            profile:
                 { ...currentUser.profile, ...newUserDescription }
         }
         dispatch(userSignUp(newUser))

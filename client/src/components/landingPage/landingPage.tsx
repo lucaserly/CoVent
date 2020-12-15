@@ -64,9 +64,10 @@ export const LandingPage = (): ReactElement => {
       <div className="landing_page_container">
         <TopBarLandingPage />
       </div>
+      <Searchbar key={Math.random()} />
+
       {currentUser.id ?
         <>
-          <Searchbar key={Math.random()} />
           <Link to={{
             pathname: '/swiping',
             state: {
@@ -75,11 +76,7 @@ export const LandingPage = (): ReactElement => {
           }}>
             <Button id="swiping-btn">Swipe all</Button>
           </Link>
-        </>
-        :
-        <>
-          <Searchbar />
-        </>
+        </> : null
       }
     </>
   )

@@ -390,6 +390,7 @@ export const ProfilePage = (): JSX.Element => {
                           <button id="invitor-view-profile-btn">View profile</button>
                         </div>
                         <div id="evaluate-invitation-btn">
+
                           <Button id="accept-invitation-btn" onClick={(e) => {
                             setReceivedLikes((prevList: any) => {
                               return prevList.filter((element: any) => {
@@ -402,6 +403,7 @@ export const ProfilePage = (): JSX.Element => {
                               sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
                             }
                           }}>√</Button>
+                          
                           <Button id="reject-invitation-btn">X</Button>
                         </div>
                       </div>

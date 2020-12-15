@@ -83,10 +83,10 @@ export const Chat = (props: any): JSX.Element => {
               
               <div id="chat">
                 {
-               currentUser.profile && currentUser.profile.id
-                && el.sentMessageId === currentUser.profile.id ?
-                  <div id="chat-message-box-current">{el.text}</div>
-              : <div id="chat-message-box-other">{el.text}</div> 
+                  currentUser.profile && currentUser.profile.id
+                    && el.sentMessageId === currentUser.profile.id ?
+                      <div id="chat-message-box-current">{el.text}</div>
+                  : <div id="chat-message-box-other">{el.text}</div> 
                 }
               </div>
             </div>

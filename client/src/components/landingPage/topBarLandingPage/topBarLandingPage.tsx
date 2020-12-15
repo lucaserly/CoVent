@@ -15,8 +15,8 @@ export const TopBarLandingPage = (): ReactElement => {
   const [showModalSignUp, setShowModalSignUp] = useState(false);
   const [showModalSignIn, setShowModalSignIn] = useState(false);
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
-  const history = useHistory()
-  const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
+  const history = useHistory();
+  const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn);
 
   function handleClick() {
     history.push("/profile")

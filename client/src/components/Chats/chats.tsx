@@ -30,7 +30,6 @@ export const Chats = (): JSX.Element => {
             <img src={el.picture} id="match-chat-picture" alt="match chat" />
             </Link>
           </div>
-          
           <div id="match-name">{el.user?.firstName}</div>
         </div>
         )}
