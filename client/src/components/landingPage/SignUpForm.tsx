@@ -16,9 +16,6 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
         setUserCredentials(prevState => ({ ...prevState, [name]: value }));
     }
 
-    function closeModal() {
-        setShowModal(false);
-    }
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -72,7 +69,7 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
 
                 <button id="submitSignUp">Submit</button>
                 <div id="toggleToSignIn">Already have an account? <span>Sign in</span></div>
-                <div id="close-modal" onClick={closeModal}>close</div>
+                <div id="close-modal" onClick={() => {setShowModal(false)}}>close</div>
             </form>
         </div>
     )
