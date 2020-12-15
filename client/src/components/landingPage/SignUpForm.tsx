@@ -22,7 +22,6 @@ export const SignUpForm = ({ setShowModal, setShowDescriptionModal }: any): JSX.
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-
         const newUser: User = {
             ...currentUser,
             ...userCredentials
