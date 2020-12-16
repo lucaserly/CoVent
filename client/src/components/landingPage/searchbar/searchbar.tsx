@@ -3,7 +3,6 @@ import './searchbar.css'
 
 export const Searchbar = ({city, setCity} : any): ReactElement => {
 
-
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setCity(ev.target.value.toLowerCase());
   }

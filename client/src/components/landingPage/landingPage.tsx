@@ -7,9 +7,7 @@ import { TopBarLandingPage } from './topBarLandingPage/topBarLandingPage';
 import { Searchbar } from './searchbar/searchbar';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { getAllProfiles } from './../../utils/userDatabaseFetch';
 import { ProfileNew } from "../../types/userLucasTypes";
-import { addLike } from './../../utils/systemFunction';
 import { LikeProfile } from './likeProfile';
 
 export const LandingPage = (): ReactElement => {
@@ -17,21 +15,10 @@ export const LandingPage = (): ReactElement => {
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const [city, setCity] = useState <string>('');
-  const user = useSelector((state: RootState) => state.user)
   const [profiles, setProfiles] = useState<ProfileNew[]>([]);
 
   // Delete the one in the child component, pass this one + make sure it tracks the changes in cities so that it updates automatically
-  
-  useEffect(() => {
-    getAllProfiles()
-      .then((list) => {
-        const filteredList = list.filter((el) => el.id !== user.id)
-        setProfiles(filteredList)
-        if (currentDirection.length && user.profile && user.profile.id) {
-          sendLikesToBackEnd(currentDirection, user.profile.id)
-        }
-      })
-  }, []);
+
 
   const filterSwipedProfiles = (profiles: ProfileNew[], currentDir: string[]): ProfileNew[] => {
     const result = [];
@@ -52,16 +39,6 @@ export const LandingPage = (): ReactElement => {
     return result;
   };
 
-  const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
-    currentDir.forEach((el) => {
-      if (String(el.match(/[^\s]+/)) === 'right') {
-        dispatch(addLike({
-          profileId: profileId,
-          givenLikeId: el.match(/\d+/g)
-        }))
-      }
-    })
-  }
 
   return (
     <>
@@ -69,7 +46,7 @@ export const LandingPage = (): ReactElement => {
         <TopBarLandingPage />
       </div>
       <Searchbar city = {city} setCity= {setCity} />
-      <LikeProfile city= {city}/>
+      <LikeProfile city= {city} />
 
       {currentUser.id ?
         <>

@@ -10,13 +10,12 @@ body {
   padding-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
   background-color: rgb(255, 255, 255);
   border-radius: 40px;
 }
 
 .image_container {
- 
   justify-content: space-around;
   max-width: 500px;
   display: flex;
@@ -32,9 +31,10 @@ body {
   max-height: 105px;
   max-width: 105px;
   min-width: 105px;
-  border-radius: 200px;
+  border-radius: 80px;
   margin-bottom: 10%;
 }
+
 
 #searchbar_area {
   margin-top: 5%;

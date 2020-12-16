@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../types/combinedStoreTypes';
 import { addLike } from '../../utils/systemFunction';
 import { ProfileNew } from '../../types/userLucasTypes';
-import { getAllProfiles } from '../../utils/userDatabaseFetch';
+import { getAllProfiles } from '../../utils/userDatabaseFetch'; 
 
 export const LikeProfile = ({city} : any): any => {
 
@@ -20,7 +20,7 @@ export const LikeProfile = ({city} : any): any => {
               return el.id !== currentUser.id})
             setUsers(filteredList)
           })
-      }, []);
+      }, [city]);
 
     const handleLike = (e: FormEvent, id: number) => {
         e.preventDefault()
@@ -33,13 +33,12 @@ export const LikeProfile = ({city} : any): any => {
         }
     }
 
-
     if (users[0] && users[0].cities) {
         renderUserWithCities = (
         users.filter(user => user.cities && user.cities.length
             && user.cities[0].name.toLowerCase().includes(city)).map((el, i) => {
             if (el && el.id) {
-                return  (
+                return (
                     <div key={i} className="image_container">
                         <img src={el.picture} className="searchbar_image" alt="profile pic" />
                         <div id="lp-profile-description">
@@ -82,6 +81,4 @@ export const LikeProfile = ({city} : any): any => {
             {city ? renderUserWithCities : renderAllUsers }
         </div>
     )
-    
-
 }
