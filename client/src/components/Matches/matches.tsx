@@ -6,16 +6,17 @@ export const Matches = () => {
 
   const currentUser = useSelector((state: RootState) => state.user)
 
-  return (
+  return (  
     <>
-      {
-        currentUser.profile &&
-        currentUser.profile.matched &&
-        currentUser.profile.matched.map((el, i) =>
-          <div key={i} className="image_container">
-            <img src={el.picture} className="searchbar_image" alt="profile pic" />
-          </div>
-        )}
+      { 
+        currentUser.profile?.matched ?
+          currentUser.profile.matched.map((el, i) =>
+            <div key={i} className="image_container">
+              <img src={el.picture} className="searchbar_image" alt="profile pic" />
+            </div>
+          ) 
+        : null
+      }
     </>
   )
 }
