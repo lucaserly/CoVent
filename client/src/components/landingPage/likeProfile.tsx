@@ -6,21 +6,19 @@ import { ProfileNew } from '../../types/userLucasTypes';
 import { getAllProfiles } from '../../utils/userDatabaseFetch'; 
 
 export const LikeProfile = ({city} : any): any => {
-
     const currentUser = useSelector((state: RootState) => state.user)
     const [users, setUsers] = useState<ProfileNew[]>([]);
     const dispatch = useDispatch();
-    let renderUserWithCities;
-    let renderAllUsers;
+    let usersList;
 
     useEffect(() => {
         getAllProfiles()
           .then((list) => {
             const filteredList = list.filter((el) => {
-              return el.id !== currentUser.id})
+                return el.id !== currentUser.id}) 
             setUsers(filteredList)
           })
-      }, [city]);
+    }, [city]);
 
     const handleLike = (e: FormEvent, id: number) => {
         e.preventDefault()
@@ -34,51 +32,36 @@ export const LikeProfile = ({city} : any): any => {
     }
 
     if (users[0] && users[0].cities) {
-        renderUserWithCities = (
-        users.filter(user => user.cities && user.cities.length
-            && user.cities[0].name.toLowerCase().includes(city)).map((el, i) => {
-            if (el && el.id) {
-                return (
-                    <div key={i} className="image_container">
-                        <img src={el.picture} className="searchbar_image" alt="profile pic" />
-                        <div id="lp-profile-description">
-                            <div id="user-description-text">{el.description}</div>
-                            <button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</button>
+        usersList = users.filter(user => user.cities && user.cities.length
+        && user.cities[0].name.toLowerCase().includes(city));
+    }
+    else if (users[0]) { 
+        usersList = users; 
+    }
+
+    if (usersList) {
+        return <div className="container"> {
+            usersList.map((el, i) => {
+                if (el.user && el) {
+                    const uppercaseInitial = el.user.firstName?.charAt(0).toUpperCase() + el.user.firstName?.slice(1);
+                    return (
+                        <div id="user-box">
+                            <div key={i} className="image_container">
+                                <img src={el.picture} className="searchbar_image" alt="profile pic" />
+                                <div id="user-name">{uppercaseInitial}</div>
+                            </div>
+            
+                            <div id="lp-profile-description">
+                                <div id="user-description-text">{el.description}</div>
+                                <button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</button>
+                            </div>
                         </div>
-                    </div> 
-                )
-            }
+                    )
+                } else { return <></> }
             })
-        )
+        } </div>
     }
-
-    if (users[0]) {
-        renderAllUsers = (
-        users.map((el, i) => {
-            if (el.user) {
-            const temp = el.user.firstName?.charAt(0).toUpperCase() + el.user.firstName?.slice(1);
-
-            return <div key={i} id="user-box">
-
-                <div className="image_container">
-                <img src={el.picture} className="searchbar_image" alt="profile pic" />
-                <div id="user-name">{temp}</div>
-                </div>
-
-                <div id="lp-profile-description">
-                <div id="user-description-text">{el.description}</div>
-                <button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</button>
-                </div>
-
-            </div>
-
-            }
-        })
-        )
+    else {
+        return null;
     }
-    return (
-        <div className="container">
-            {city ? renderUserWithCities : renderAllUsers }
-        </div>
-    )
 }
