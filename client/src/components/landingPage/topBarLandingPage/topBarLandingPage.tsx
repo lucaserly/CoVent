@@ -24,7 +24,7 @@ export const TopBarLandingPage = (): ReactElement => {
 
   return (
     <div className="top_bar_landing_page_container">
-
+      
       <div id="logo-area">
         <span id="app-logo">CO</span><span id="v">V</span><span id="app-logo">ENT</span>
         <div id="app-catchphrase">Connecting people through events</div>
@@ -34,12 +34,12 @@ export const TopBarLandingPage = (): ReactElement => {
         <TopBarNewMatchesButton />
         <TopBarSignUpButton setShowModal= {setShowModalSignUp}/>
         
-        {showModalSignUp?
-          <SignUpForm setShowModal={setShowModalSignUp} setShowDescriptionModal= {setShowDescriptionModal}/> : null }
-        {showModalSignIn?
-          <SignInForm setShowModal={setShowModalSignIn}/> : null }
-        {showDescriptionModal?
-          <DescriptionForm setShowDescriptionModal= {setShowDescriptionModal}/> : null}
+        {showModalSignUp &&
+          <SignUpForm setShowModal={setShowModalSignUp} setShowDescriptionModal= {setShowDescriptionModal}/> }
+        {showModalSignIn &&
+          <SignInForm setShowModal={setShowModalSignIn}/>}
+        {showDescriptionModal &&
+          <DescriptionForm setShowDescriptionModal= {setShowDescriptionModal}/>}
         {userIsLoggedIn &&
           <button id="profile-btn" onClick={handleClick} >Profile</button>
         }

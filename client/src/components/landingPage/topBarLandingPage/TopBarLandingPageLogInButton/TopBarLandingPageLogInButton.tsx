@@ -5,9 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../../../types/combinedStoreTypes'
 import { userLogin, userLogOut, addSwipeToProfile } from '../../../../utils/systemFunction'
 
-const USER_LOGGED_IN_TEXT = 'Log In'
-const USER_LOGGED_OUT_TEXT = 'Log Out'
-
 interface TopBarSignInButtonProp {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -34,15 +31,11 @@ export const TopBarLandingPageLogInButton = ({ setShowModal }: TopBarSignInButto
     dispatch(userLogOut())
   }
 
-  function displayModal() {
-    setShowModal(true);
-  }
-
   return (
     <div className="log_in_button_container">
       {userLoggedIn
-        ? <div id="logout-div" onClick={handleLogOut}>{USER_LOGGED_OUT_TEXT}</div>
-        : <button id="login-btn" onClick={displayModal}>{USER_LOGGED_IN_TEXT}</button>
+        ? <div id="logout-div" onClick={handleLogOut}>Log out</div>
+        : <button id="login-btn" onClick={() => {setShowModal(true)}}>Sign in</button>
       }
     </div>
   )

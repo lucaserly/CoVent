@@ -11,16 +11,12 @@ export const TopBarSignUpButton = ({ setShowModal }: TopBarSignUpButtonProp): JS
   const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
   const showSignUp = userIsLoggedIn || null
 
-  function displayModal() {
-    setShowModal(true);
-  }
-
   return (
     <div>
       <div className="top_bar_sign_up_button_container">
         {showSignUp ??
           <>
-            <button className="top_bar_sign_up_button" onClick={displayModal}>Sign Up</button>
+            <button className="top_bar_sign_up_button" onClick={ () => {setShowModal(true)}}>Sign Up</button>
           </>
         }
       </div>
