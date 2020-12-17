@@ -6,57 +6,10 @@ import { profileUpdate, addCityToProfile, addCategoryToProfile, addLike } from '
 import { Link } from 'react-router-dom';
 import { getAllProfiles } from './../../utils/userDatabaseFetch';
 import { setDirection } from '../../redux/directionState/directionActions';
-import './profilePage.css';
 import { User, Profile, CityAdd } from '../../types/user';
 import { ListofCategories} from './ListofCategories';
-
-const categories = [
-  'Athletics',
-  'Ball Sports',
-  'Beach Sports',
-  'Body & Mind',
-  'Cars',
-  'City',
-  'Climbing',
-  'Combat Sports',
-  'Cycling',
-  'Dancing',
-  'Equestrianism',
-  'Fitness',
-  'For Fun',
-  'Games',
-  'Hiking',
-  'Ice',
-  'Motorcycles',
-  'Multi-Sport',
-  'Nature',
-  'Party',
-  'Photography',
-  'Piloting',
-  'Pool',
-  'Racket Sports',
-  'Rowing',
-  'Shooting',
-  'Sky',
-  'Snow',
-  'Strength',
-  'Traveling',
-  'Underwater',
-  'Water',
-  'Wind'
-]
-
-const initialProfileState: Profile = {
-  id: undefined,
-  picture: '',
-  description: '',
-  age: '',
-  gender: '',
-  location: '',
-  hasNewMatch: false,
-  receivedLike: [],
-  swipes: []
-}
+import { initialProfileState } from '../../redux/userState/userReducer';
+import './profilePage.css';
 
 export const ProfilePage = (): JSX.Element => {
   
@@ -73,7 +26,6 @@ export const ProfilePage = (): JSX.Element => {
   const [city, setCity] = useState('');
   const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
-
   const categories = ListofCategories();
 
   useEffect(() => {
@@ -122,9 +74,7 @@ export const ProfilePage = (): JSX.Element => {
   };
 
   const firstLetterUpper = (str: string): string => {
-    const arr = str.split('')
-    arr[0] = arr[0].toUpperCase()
-    return arr.join('')
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   const handleCitySubmit = (e: FormEvent) => {
@@ -312,7 +262,7 @@ export const ProfilePage = (): JSX.Element => {
                   matches: user.profile && user.profile.matched
                 }
               }}>
-                <Button id="chats-link-btn">Chat Room</Button>
+                <button id="chats-link-btn">Chat Room</button>
               </Link>
             </div>
           </div>

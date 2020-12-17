@@ -1,6 +1,7 @@
 import { UserActionTypes, SET_USER, } from '../../types/user/userActions';
 import { User, Profile, Swipe } from '../../types/user';
 
+
 const initialSwipesState: Swipe = {
   id: undefined,
   swipeId: '',
@@ -20,7 +21,7 @@ const initialReceivedLikeState: Profile = {
   swipes: [initialSwipesState]
 }
 
-const initialProfileState: Profile = {
+export const initialProfileState: Profile = {
   id: undefined,
   picture: '',
   description: '',

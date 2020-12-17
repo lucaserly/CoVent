@@ -10,7 +10,6 @@ import { Profile } from '../../types/user';
 import './landingPage.css';
 
 export const LandingPage = (): ReactElement => {
-  const dispatch = useDispatch()
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const [city, setCity] = useState <string>('');
@@ -34,7 +33,7 @@ export const LandingPage = (): ReactElement => {
     }
     return result;
   };
-  
+
   return (
     <>
       <div className="landing_page_container">
