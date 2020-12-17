@@ -8,6 +8,7 @@ import { getAllProfiles } from './../../utils/userDatabaseFetch';
 import { setDirection } from '../../redux/directionState/directionActions';
 import './profilePage.css';
 import { User, Profile, CityAdd } from '../../types/user';
+import { ListofCategories} from './ListofCategories';
 
 const categories = [
   'Athletics',
@@ -58,11 +59,10 @@ const initialProfileState: Profile = {
 }
 
 export const ProfilePage = (): JSX.Element => {
-
+  
   const user = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const dispatch = useDispatch();
-
   const [show, setShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [picture, setPicture] = useState('')
@@ -73,6 +73,8 @@ export const ProfilePage = (): JSX.Element => {
   const [city, setCity] = useState('');
   const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
+
+  const categories = ListofCategories();
 
   useEffect(() => {
     setReceivedLikes(user.profile.receivedLike)
