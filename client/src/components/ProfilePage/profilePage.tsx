@@ -8,6 +8,7 @@ import { getAllProfiles } from './../../utils/userDatabaseFetch';
 import { setDirection } from '../../redux/directionState/directionActions';
 import './profilePage.css';
 import { User, Profile, CityAdd } from '../../types/user';
+import { initialProfileState } from './../../redux/userState/userReducer';
 
 const categories = [
   'Athletics',
@@ -45,18 +46,6 @@ const categories = [
   'Water',
   'Wind'
 ]
-
-const initialProfileState: Profile = {
-  id: undefined,
-  picture: '',
-  description: '',
-  age: '',
-  gender: '',
-  location: '',
-  hasNewMatch: false,
-  receivedLike: [],
-  swipes: []
-}
 
 export const ProfilePage = (): JSX.Element => {
 
@@ -114,7 +103,8 @@ export const ProfilePage = (): JSX.Element => {
           picture: picture !== "" ? picture : user.profile.picture,
           receivedLike: user.profile.receivedLike,
           userId: user.id,
-          swipes: user.profile.swipes
+          swipes: user.profile.swipes,
+          matches: user.profile.matches
         }
       }
       dispatch(profileUpdate(newUs))
@@ -175,7 +165,7 @@ export const ProfilePage = (): JSX.Element => {
         filteredByPreviousSwipes = filteredByCityActivitySelf
       }
 
-      if (filteredByPreviousSwipes.length > 0 && (user.profile && user.profile.swipes && user.profile.swipes.length > 0 || currentDir.length > 0)) {
+      if (filteredByPreviousSwipes.length > 0 && (user.profile.swipes.length > 0 || currentDir.length > 0)) {
         const result = [];
         for (let i = 0; i < filteredByPreviousSwipes.length; i++) {
           let flag;
@@ -195,7 +185,7 @@ export const ProfilePage = (): JSX.Element => {
       }
       else {
         const filteredByNotMatchedYet = [];
-        if (user && user.profile && user.profile.matched && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes.length > 0) {
+        if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes.length > 0) {
           for (let i = 0; i < filteredByCityAndActivity.length; i++) {
             let flag;
             for (let a = 0; a < user.profile.matched.length; a++) {
@@ -219,7 +209,7 @@ export const ProfilePage = (): JSX.Element => {
   };
 
   const filterByCity = (profiles: Profile[]): Profile[] | undefined => {
-    if (user && user.profile && user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name) {
+    if (user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name) {
       const res = profiles.filter((el): boolean | undefined => {
         if (user && user.profile && user.profile.cities && user.profile.cities[0].name && el && el.cities && el.cities.length > 0) {
           if (el.cities && el.cities[0] && el.cities[0].name && user && user.profile && user.profile.cities && user.profile.cities[0]) {

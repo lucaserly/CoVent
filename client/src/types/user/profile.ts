@@ -7,14 +7,14 @@ import { City } from './city';
 import { Swipe } from './swipe';
 
 export interface Profile {
-  id: number | undefined,
-  picture?: string,
-  description?: string,
+  id?: number,
+  picture: string,
+  description: string,
   age: string,
   gender: string,
   location: string,
-  userId?: number,
-  hasNewMatch?: boolean,
+  userId: number | undefined,
+  hasNewMatch: boolean,
 
   likedProfile?: Profile[],
   receivedLike: Profile[],

@@ -1,7 +1,33 @@
 import { UserActionTypes, SET_USER, } from '../../types/user/userActions';
-import { User, Profile, Swipe } from '../../types/user';
+import { User, Profile, Swipe, Match } from '../../types/user';
 
-const initialSwipesState: Swipe = {
+export const initialMatchesState: Match = {
+  createdAt: '',
+  updatedAt: '',
+  matched: undefined,
+  partner: undefined,
+}
+
+// export const initialMatchedState: Profile = {
+//   id: undefined,
+//   picture: '',
+//   description: '',
+//   age: '',
+//   gender: '',
+//   location: '',
+//   userId: undefined,
+//   hasNewMatch: false,
+//   user: {
+//     id: undefined,
+//     firstName: '',
+//     lastName: '',
+//     email: '',
+
+//   },
+//   matches: initialMatchesState
+// }
+
+export const initialSwipesState: Swipe = {
   id: undefined,
   swipeId: '',
   createdAt: '',
@@ -9,18 +35,21 @@ const initialSwipesState: Swipe = {
   profileId: undefined
 }
 
-const initialReceivedLikeState: Profile = {
+export const initialReceivedLikeState: Profile = {
   id: undefined,
   age: '',
   description: '',
   gender: '',
   location: '',
   picture: '',
+  userId: undefined,
+  hasNewMatch: false,
   receivedLike: [],
-  swipes: [initialSwipesState]
+  swipes: [initialSwipesState],
+  matches: initialMatchesState
 }
 
-const initialProfileState: Profile = {
+export const initialProfileState: Profile = {
   id: undefined,
   picture: '',
   description: '',
@@ -28,11 +57,14 @@ const initialProfileState: Profile = {
   gender: '',
   location: '',
   hasNewMatch: false,
+  userId: undefined,
   receivedLike: [initialReceivedLikeState],
   swipes: [initialSwipesState],
+  // matched: [initialMatchedState],
+  matches: initialMatchesState
 }
 
-const initialUserState: User = {
+export const initialUserState: User = {
   firstName: '',
   lastName: '',
   email: '',

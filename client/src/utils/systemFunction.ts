@@ -7,6 +7,7 @@ import { clearDirection } from './../redux/directionState/directionActions';
 import { Dispatch } from 'react';
 import { SystemActionTypes } from '../types/systemTypes';
 import { UserActionTypes } from '../types/user/userActions';
+import { initialUserState } from './../redux/userState/userReducer';
 
 // here make itnerface credentials interface -> then later on you userfirebase interface
 export const userLogin = (creds: UserFireBase) => {
@@ -40,23 +41,7 @@ export const userLogOut = () => {
     return (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): void => {
         fire.auth().signOut().then(function () {
             dispatch(setUserToLoggedOut())
-            dispatch(setUser({
-                id: 0,
-                email: '',
-                firstName: '',
-                lastName: '',
-                profile: {
-                    id: undefined,
-                    age: '',
-                    description: '',
-                    gender: '',
-                    location: '',
-                    picture: '',
-                    userId: 0,
-                    receivedLike: [],
-                    swipes: []
-                }
-            }))
+            dispatch(setUser(initialUserState))
             dispatch(clearDirection([]))
         }).catch(function (error) {
             console.log(error)
