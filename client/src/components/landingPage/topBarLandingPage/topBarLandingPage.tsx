@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { TopBarLandingPageLogInButton } from './TopBarLandingPageLogInButton/TopBarLandingPageLogInButton'
 import { TopBarSignUpButton } from './TopBarSignUpButton/TopBarSignUpButton'
-import './topBarLandingPage.css'
 import { TopBarNewMatchesButton } from './TopBarNewMatchesButton/TopBarNewMatchesButton'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -9,6 +8,7 @@ import { RootState } from '../../../types/combinedStoreTypes'
 import SignUpForm from '../SignUpForm'
 import SignInForm from '../SignInForm'
 import DescriptionForm from '../DescriptionForm'
+import './topBarLandingPage.css'
 
 export const TopBarLandingPage = (): ReactElement => {
 
@@ -29,7 +29,6 @@ export const TopBarLandingPage = (): ReactElement => {
         <span id="app-logo">CO</span><span id="v">V</span><span id="app-logo">ENT</span>
         <div id="app-catchphrase">Connecting people through events</div>
       </div>
-
       <div id="top-right-buttons-area">
         <TopBarNewMatchesButton />
         <TopBarSignUpButton setShowModal= {setShowModalSignUp}/>
@@ -43,7 +42,6 @@ export const TopBarLandingPage = (): ReactElement => {
         {userIsLoggedIn &&
           <button id="profile-btn" onClick={handleClick} >Profile</button>
         }
-        
         <TopBarLandingPageLogInButton setShowModal={setShowModalSignIn} />
       </div>
     </div>

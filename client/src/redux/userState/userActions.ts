@@ -1,7 +1,5 @@
-import {
-  SET_USER, SET_USER_NAME, SET_USER_AGE,
-  UserActionTypes, User, SET_USER_DIRECTION
-} from '../../types/userTypes';
+import { SET_USER, SET_USER_NAME, SET_USER_AGE, UserActionTypes } from '../../types/user/userActions';
+import { User } from '../../types/user'
 
 export function setUser(user: User): UserActionTypes {
   return {

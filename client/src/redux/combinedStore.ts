@@ -11,4 +11,4 @@ const rootReducer = combineReducers({
   direction: directionReducer,
 })
 
- export const store = createStore(rootReducer, applyMiddleware(thunk))
+export const store = createStore(rootReducer, applyMiddleware(thunk))

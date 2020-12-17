@@ -3,7 +3,11 @@ import React, { FormEvent, useState } from 'react';
 import { userLogin } from "../../utils/systemFunction";
 import { useDispatch } from "react-redux";
 
-export const SignInForm = ({ setShowModal }: any): JSX.Element => {
+interface SignInFormProp {
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const SignInForm = ({ setShowModal }: SignInFormProp): JSX.Element => {
 
     const dispatch = useDispatch();
     const [userName, setUserName] = useState('');
@@ -36,7 +40,7 @@ export const SignInForm = ({ setShowModal }: any): JSX.Element => {
                 <input
                     id="inputUserEmail"
                     placeholder="Enter email"
-                    onChange={(ev: React.ChangeEvent<HTMLInputElement>,): void =>
+                    onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                         handleUserName(ev)} >
                 </input>
 
@@ -49,7 +53,7 @@ export const SignInForm = ({ setShowModal }: any): JSX.Element => {
 
                 <button id="submitSignUp">Submit</button>
                 <div id="toggleToSignUp">No account yet? <span>Sign Up</span></div>
-                <div id="close-modal" onClick={() => {setShowModal(false)}}>close</div>
+                <div id="close-modal" onClick={() => { setShowModal(false) }}>close</div>
             </form>
         </div>
     )

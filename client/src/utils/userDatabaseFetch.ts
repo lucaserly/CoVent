@@ -1,216 +1,203 @@
-import { Category, GiveLike, ReceivedLike } from './../types/userTypes';
-import { Profile, User } from "../types/userTypes";
-import { UserL, City, ProfileNew, CityAdd } from "../types/userLucasTypes";
+import { User, Profile, City, Category, LikeProfile, ReceiveLike, Swipe, Message, Messaged, Credentials, CityAdd } from '../types/user';
 const baseUrl = "http://localhost:3002";
 
-export const getAllUsers = (): Promise<UserL[]> => {
-  return fetch(`${baseUrl}/users`, {
+export const getAllUsers = (): Promise<User[]> => {
+  return fetchRequest(`/users`, {
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json());
+    }
+  })
 };
 
 export function getUserByEmailAndPassword(email: string, password: string): Promise<User> {
-  const user: User = {
-    email,
-    password
-  }
-  return fetch(`${baseUrl}/login`, {
+  return fetchRequest(`/login`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(user),
-  }).then((res) => res.json());
+    body: JSON.stringify({ email, password }),
+  })
 }
 
 export function getUserById(id: string): Promise<User[]> {
-  return fetch(`${baseUrl}/user/${id}`, {
+  return fetchRequest(`/user/${id}`, {
     headers: {
       'Content-Type': 'application/json'
-    },
-  }).then((res) => res.json());
+    }
+  })
 }
 
-export function registerUserToDataBase(user: User): Promise<User> {
-  const userAdoped: User = {
-    firstName: user.firstName, lastName: user.lastName,
-    email: user.email, password: user.password
-  }
-  return fetch(`${baseUrl}/register`, {
+export function registerUserToDataBase(userToRegister: Credentials): Promise<User> {
+  return fetchRequest(`/register`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(userAdoped),
-  }).then((res) => res.json());
+    body: JSON.stringify(userToRegister),
+  })
 }
 
-export function addProfileToUserAtDataBase(profile: Profile): any {
-  return fetch(`${baseUrl}/profile`, {
+export function addProfileToUserAtDataBase(profile: Profile): Promise<Response> {
+  return fetchRequest(`/profile`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(profile),
-  }).then((res) => {
-    if (res.status === 204) {
-      return res;
-    } else {
-      res.json()
-    }
-  });
+  })
 }
 
 export function addCategoryToUserAtDataBase(category: Category): Promise<User> {
-  return fetch(`${baseUrl}/category`, {
+  return fetchRequest(`/category`, {
     method: "POST",
     body: JSON.stringify(category),
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json());
+    }
+  })
 }
 
-export function giveLikeToOtherUser(giveLike: GiveLike): Promise<User> {
-  return fetch(`${baseUrl}/like/give`, {
+export function giveLikeToOtherUser(giveLike: LikeProfile): Promise<User> {
+  return fetchRequest(`/like/give`, {
     method: "POST",
     body: JSON.stringify(giveLike),
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json());
+    }
+  })
 }
 
-export function receivedLikeFromOther(receivedLike: ReceivedLike): Promise<User> {
-  return fetch(`${baseUrl}/like/received`, {
+export function receivedLikeFromOther(receivedLike: ReceiveLike): Promise<User> {
+  return fetchRequest(`/like/received`, {
     method: "POST",
     body: JSON.stringify(receivedLike),
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json());
+    }
+  })
 }
 
-export const updateUserProfileData = (updatedUserProfile: Profile): any => {
-  return fetch(`${baseUrl}/profile`, {
+export const updateUserProfileData = (updatedUserProfile: Profile): Promise<Response> => {
+  return fetchRequest(`/profile`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(updatedUserProfile),
-  }).then((res) => res);
+  })
 };
 
 export const getAllCities = (): Promise<City[]> => {
-  return fetch(`${baseUrl}/cities`, {
+  return fetchRequest(`/cities`, {
     headers: {
       Accept: "application/json",
     },
-  }).then((res) => res.json())
+  })
 };
 
-export const getAllProfiles = (): Promise<ProfileNew[]> => {
-  return fetch(`${baseUrl}/profiles`, {
+export const getAllProfiles = (): Promise<Profile[]> => {
+  return fetchRequest(`/profiles`, {
     headers: {
       Accept: "application/json",
     },
-  }).then((res) => res.json())
+  })
 };
 
-export const addCity = (city: CityAdd): any => {
-  return fetch(`${baseUrl}/city`, {
+export const addCity = (city: CityAdd): Promise<City> => {
+  return fetchRequest(`/city`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(city),
-  }).then((res) => res.json());
+  })
 };
 
-export const giveLike = (like: any): any => {
-  return fetch(`${baseUrl}/like/give`, {
+export const giveLike = (like: LikeProfile): Promise<User[]> => {
+  return fetchRequest(`/like/give`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(like),
-  }).then((res) => res.json());
+  })
 };
 
-export const addCategory = (category: any): any => {
-  return fetch(`${baseUrl}/category`, {
+export const addCategory = (category: { profileId: number, name: string }): Promise<Category> => {
+  return fetchRequest(`/category`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(category),
-  }).then((res) => res.json());
+  })
 }
 
-export const addSwipe = (swipe: any): any => {
-  return fetch(`${baseUrl}/swipe`, {
+export const addSwipe = (swipe: { profileId: number, swipeId: number }): Promise<Swipe> => {
+  return fetchRequest(`/swipe`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(swipe)
-  }).then((res) => res.json())
+  })
 };
 
-export const addMsg = (msg: any): any => {
-  return fetch(`${baseUrl}/message`, {
+export const addMsg = (msg: Messaged): Promise<Response | undefined> => {
+  return fetchRequest(`/message`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(msg)
-  }).then((res) => {
-    if (res.status === 204) {
-      return res;
-    } else {
-      res.json()
-    }
   })
 };
 
-export const getAllMsgs = (): any => {
-  return fetch(`${baseUrl}/messages`, {
+export const getAllMsgs = (): Promise<Message[]> => {
+  return fetchRequest(`/messages`, {
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json())
+    }
+  })
 }
 
-export const getMsgByProfileId = (profileId: number): any => {
-  return fetch(`${baseUrl}/messages/${profileId}`, {
+export const getMsgByProfileId = (profileId: number): Promise<Profile> => {
+  return fetchRequest(`/messages/${profileId}`, {
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json())
+    }
+  })
 }
 
-export const getMsgByReceivedId = (receivedId: number): any => {
-  return fetch(`${baseUrl}/messages/received/${receivedId}`, {
+export const getMsgByReceivedId = (receivedId: number): Promise<Message[]> => {
+  return fetchRequest(`/messages/received/${receivedId}`, {
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json())
+    }
+  })
 }
 
-export const getMsgBySentId = (sentId: number): any => {
-  return fetch(`${baseUrl}/messages/sent/${sentId}`, {
+export const getMsgBySentId = (sentId: number): Promise<Message[]> => {
+  return fetchRequest(`/messages/sent/${sentId}`, {
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json())
+    }
+  })
 }
 
-export const getMsgsByProfileIdAndReceiverId = (profileId: number, receiverId: number): any => {
-  return fetch(`${baseUrl}/messages/${profileId}/${receiverId}`, {
+export const getMsgsByProfileIdAndReceiverId = (profileId: number, receiverId: number): Promise<Message[]> => {
+  return fetchRequest(`/messages/${profileId}/${receiverId}`, {
     headers: {
       Accept: "application/json",
-    },
-  }).then((res) => res.json())
+    }
+  })
+}
+
+const fetchRequest = (path: string, options?: RequestInit) => {
+  return fetch(baseUrl + path, options)
+    .then(res => res.status < 400 ? res : Promise.reject())
+    .then(res => res.status !== 204 ? res.json() : res)
+    .catch(err => {
+      console.error('Error:', err);
+    })
 }

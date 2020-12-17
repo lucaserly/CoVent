@@ -1,11 +1,11 @@
-import { SET_USER_FIREBASE_ID } from './../../types/userTypes';
-import { SystemState, SystemActionTypes, SET_USER_AS_LOGGED_IN , SET_USER_AS_LOGGED_OUT } from './../../types/systemTypes';
+import { SET_USER_FIREBASE_ID } from '../../types/user/userActions';
+import { SystemState, SystemActionTypes, SET_USER_AS_LOGGED_IN, SET_USER_AS_LOGGED_OUT } from './../../types/systemTypes';
 
 const initialSystemState: SystemState = {
   loggedIn: false,
   session: '',
   userName: '',
-  userFirebaseId: '' ,
+  userFirebaseId: '',
   userEmail: '',
 }
 
@@ -17,7 +17,7 @@ export function systemReducer(
     case SET_USER_AS_LOGGED_IN:
       return {
         ...state,
-        loggedIn:action.payload
+        loggedIn: action.payload
       }
     case SET_USER_AS_LOGGED_OUT:
       return {
