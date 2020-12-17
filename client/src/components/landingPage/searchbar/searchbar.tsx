@@ -1,18 +1,17 @@
 import React, { ReactElement, useState, useEffect, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './../../../types/combinedStoreTypes';
-import { ProfileNew } from './../../../types/userLucasTypes';
+import { Profile, LikeProfile } from '../../../types/user';
 import { getAllProfiles } from './../../../utils/userDatabaseFetch';
 import { Button, Modal } from 'react-bootstrap';
+import { addLike } from './../../../utils/systemFunction';
 import './searchbar.css'
-import { addLike } from './../../../utils/systemFunction'
 
 export const Searchbar = (): ReactElement => {
 
   const currentUser = useSelector((state: RootState) => state.user)
-  const currentDirection = useSelector((state: RootState) => state.direction)
   const dispatch = useDispatch();
-  const [users, setUsers] = useState<ProfileNew[]>([]);
+  const [users, setUsers] = useState<Profile[]>([]);
   const [city, setCity] = useState('');
   const [show, setShow] = useState(false);
 
@@ -20,10 +19,11 @@ export const Searchbar = (): ReactElement => {
     getAllProfiles()
       .then((list) => {
         const filteredList = list.filter((el) => {
-          return el.id !== currentUser.id})
+          return el.id !== currentUser.id
+        })
         setUsers(filteredList)
       })
-  }, []);
+  }, [currentUser.id]);
 
   const handleChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
     setCity(ev.target.value.toLowerCase());
@@ -35,7 +35,7 @@ export const Searchbar = (): ReactElement => {
   const handleLike = (e: FormEvent, id: number) => {
     e.preventDefault()
     if (currentUser.profile) {
-      const like: any = {
+      const like: LikeProfile = {
         profileId: currentUser.profile.id,
         givenLikeId: id,
       }
@@ -49,7 +49,7 @@ export const Searchbar = (): ReactElement => {
   if (users[0] && users[0].cities) {
     renderUserWithCities = (
       users.filter(user => user.cities && user.cities.length
-        && user.cities[0].name.toLowerCase().includes(city)).map((el, i) => {
+        && user.cities[0].name.toLowerCase().includes(city)).map((el, i): JSX.Element | void => {
           if (el && el.id) {
             return <div key={i} className="image_container">
               <img src={el.picture} className="searchbar_image" alt="profile pic" />
@@ -59,6 +59,9 @@ export const Searchbar = (): ReactElement => {
               </div>
             </div>
           }
+          else {
+            return undefined;
+          }
         }
         )
     )
@@ -66,24 +69,21 @@ export const Searchbar = (): ReactElement => {
 
   if (users[0]) {
     renderAllUsers = (
-      users.map((el, i) => {
-        if (el.user) {
+      users.map((el, i): JSX.Element | void => {
+        if (el.user && el.user.firstName) {
           const temp = el.user.firstName?.charAt(0).toUpperCase() + el.user.firstName?.slice(1);
-
           return <div key={i} id="user-box">
-
             <div className="image_container">
               <img src={el.picture} className="searchbar_image" alt="profile pic" onClick={handleShow} />
               <div id="user-name">{temp}</div>
             </div>
-
             <div id="lp-profile-description">
               <div id="user-description-text">{el.description}</div>
               <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
             </div>
-
           </div>
-
+        } else {
+          return undefined;
         }
       })
     )

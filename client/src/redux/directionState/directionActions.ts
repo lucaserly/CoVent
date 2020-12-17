@@ -1,4 +1,4 @@
-import { UserActionTypes, SET_USER_DIRECTION, CLEAR_USER_DIRECTION } from '../../types/userTypes';
+import { UserActionTypes, SET_USER_DIRECTION, CLEAR_USER_DIRECTION } from '../../types/user/userActions';
 
 export function setDirection(dir: string[]): UserActionTypes {
   return {

@@ -1,36 +1,33 @@
-import { SystemActionTypes } from './../types/systemTypes';
-import { Dispatch } from 'react';
 import { setUserFirebaseId, setUserToLoggedIn, setUserToLoggedOut } from '../redux/systemState/systemStateActions';
 import fire from './firebase';
-import {
-    addProfileToUserAtDataBase, getUserById,
-    registerUserToDataBase, getUserByEmailAndPassword,
-    updateUserProfileData, addCity, giveLike, addCategory,
-    addSwipe, addMsg, getAllMsgs, getMsgByProfileId,
-    getMsgByReceivedId, getMsgBySentId
-} from './userDatabaseFetch';
-import { User, Profile } from '../types/userTypes';
+import { addProfileToUserAtDataBase, getUserById, registerUserToDataBase, getUserByEmailAndPassword, updateUserProfileData, addCity, giveLike, addCategory, addSwipe } from './userDatabaseFetch';
+import { User, CityAdd, UserFireBase, City, LikeProfile, Category, Credentials } from '../types/user';
 import { setUser } from '../redux/userState/userActions';
-import { UserL, City, ProfileNew, CityAdd } from "../types/userLucasTypes";
-import { setDirection, clearDirection } from './../redux/directionState/directionActions';
+import { clearDirection } from './../redux/directionState/directionActions';
+import { Dispatch } from 'react';
+import { SystemActionTypes } from '../types/systemTypes';
+import { UserActionTypes } from '../types/user/userActions';
 
-
-export const userLogin = (creds: any) => {
-    return (dispatch: any) => {
+// here make itnerface credentials interface -> then later on you userfirebase interface
+export const userLogin = (creds: UserFireBase) => {
+    return (dispatch: Dispatch<SystemActionTypes | UserActionTypes>): void => {
         fire
             .auth()
             .signInWithEmailAndPassword(creds.email, creds.password)
             .then((res) => {
-                dispatch(setUserFirebaseId(res.user?.uid));
-                dispatch(setUserToLoggedIn());
-                getUserByEmailAndPassword(creds.email, creds.password).then(updatedUser => {
-                    if (updatedUser.id) {
-                        getUserById(updatedUser.id.toString()).then(user => {
-                            const newUser = user[0]
-                            dispatch(setUser(newUser))
-                        })
-                    }
-                })
+                if (res.user) {
+                    dispatch(setUserFirebaseId(res.user.uid));
+                    dispatch(setUserToLoggedIn());
+                    getUserByEmailAndPassword(creds.email, creds.password).then(updatedUser => {
+                        if (updatedUser.id) {
+                            getUserById(updatedUser.id.toString()).then(user => {
+                                const newUser = user[0]
+                                dispatch(setUser(newUser))
+
+                            })
+                        }
+                    })
+                }
             })
             .catch(err => {
                 alert(err)
@@ -40,22 +37,24 @@ export const userLogin = (creds: any) => {
 };
 
 export const userLogOut = () => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): void => {
         fire.auth().signOut().then(function () {
             dispatch(setUserToLoggedOut())
             dispatch(setUser({
                 id: 0,
                 email: '',
-                password: '',
                 firstName: '',
                 lastName: '',
                 profile: {
+                    id: undefined,
                     age: '',
                     description: '',
                     gender: '',
                     location: '',
                     picture: '',
                     userId: 0,
+                    receivedLike: [],
+                    swipes: []
                 }
             }))
             dispatch(clearDirection([]))
@@ -66,24 +65,31 @@ export const userLogOut = () => {
 };
 
 export const userSignUp = (user: User) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): void => {
         if (user.email && user.password) {
             fire
                 .auth()
                 .createUserWithEmailAndPassword(user.email, user.password)
                 .then((firebaseUser) => {
-                    dispatch(setUserFirebaseId(firebaseUser.user?.uid));
-                    dispatch(setUserToLoggedIn());
-                    registerUserToDataBase(user).then(registeredUser => {
+                    if (firebaseUser.user) {
+                        dispatch(setUserFirebaseId(firebaseUser.user.uid));
+                        dispatch(setUserToLoggedIn());
+                    }
+                    const userToRegister: Credentials = {
+                        firstName: user.firstName, lastName: user.lastName,
+                        email: user.email, password: user.password
+                    }
+                    registerUserToDataBase(userToRegister).then(registeredUser => {
                         if (registeredUser.id) {
                             if (user.profile) {
                                 user.profile.userId = Number(registeredUser.id);
                                 addProfileToUserAtDataBase(user.profile)
                                     .then(() => {
                                         if (user.profile && user.profile.userId) {
-                                            getUserById(user.profile.userId.toString()).then(updatedUser => {
-                                                dispatch(setUser(updatedUser[0]))
-                                            })
+                                            getUserById(user.profile.userId.toString())
+                                                .then(updatedUser => {
+                                                    dispatch(setUser(updatedUser[0]))
+                                                })
                                         }
                                     })
                             }
@@ -98,7 +104,7 @@ export const userSignUp = (user: User) => {
 };
 
 export const profileUpdate = (user: User) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): void => {
         if (user && user.profile) {
             updateUserProfileData(user.profile)
                 .then(() => {
@@ -109,41 +115,43 @@ export const profileUpdate = (user: User) => {
 };
 
 export const addCityToProfile = (city: CityAdd, user: User) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): void => {
         addCity(city)
-            .then((el: any) => {
-                if (user.profile && user.profile.cities && !el.error) {
+            .then((el: City) => {
+                if (user.profile && user.profile.cities) {
                     user.profile.cities[0] = el
                     dispatch(setUser(user))
                 }
+            }).catch((error: Error) => {
+                console.log(error);
             })
     }
 };
 
-export const addLike = (like: any): any => {
-    return (dispatch: any) => {
+export const addLike = (like: LikeProfile) => {
+    return (dispatch: Dispatch<UserActionTypes>): void => {
         giveLike(like)
-            .then((newUser: any) => {
+            .then((newUser: User[]) => {
                 dispatch(setUser(newUser[0]))
             })
     }
 };
 
-export const addCategoryToProfile = (category: any, user: User): any => {
-    return (dispatch: any) => {
+export const addCategoryToProfile = (category: { profileId: number, name: string }, user: User) => {
+    return (dispatch: Dispatch<UserActionTypes>): void => {
         addCategory(category)
-            .then((activity: any) => {
+            .then((activity: Category) => {
                 if (user.profile && user.profile.categories) {
-                    if (!activity.error) {
-                        user.profile.categories[0] = activity
-                        dispatch(setUser(user))
-                    }
+                    user.profile.categories[0] = activity
+                    dispatch(setUser(user))
                 }
+            }).catch((error: Error) => {
+                console.log(error);
             })
     }
 };
 
-export const addSwipeToProfile = (swipe: any): any => {
+export const addSwipeToProfile = (swipe: { profileId: number, swipeId: number }): void => {
     addSwipe(swipe);
 };
 

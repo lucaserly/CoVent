@@ -1,35 +1,34 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../types/combinedStoreTypes';
-import './landingPage.css'
-import { useDispatch } from 'react-redux'
 import { TopBarLandingPage } from './topBarLandingPage/topBarLandingPage';
 import { Searchbar } from './searchbar/searchbar';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { getAllProfiles } from './../../utils/userDatabaseFetch';
-import { ProfileNew } from "../../types/userLucasTypes";
+import { Profile } from '../../types/user';
 import { addLike } from './../../utils/systemFunction';
+import './landingPage.css';
 
 export const LandingPage = (): ReactElement => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
-  const user = useSelector((state: RootState) => state.user)
-  const [profiles, setProfiles] = useState<ProfileNew[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
     getAllProfiles()
       .then((list) => {
-        const filteredList = list.filter((el) => el.id !== user.id)
+        const filteredList = list.filter((el) => el.id !== currentUser.id)
         setProfiles(filteredList)
-        if (currentDirection.length && user.profile && user.profile.id) {
-          sendLikesToBackEnd(currentDirection, user.profile.id)
+        if (currentDirection.length && currentUser.profile && currentUser.profile.id) {
+          sendLikesToBackEnd(currentDirection, currentUser.profile.id)
         }
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filterSwipedProfiles = (profiles: ProfileNew[], currentDir: string[]): ProfileNew[] => {
+  const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] => {
     const result = [];
     for (let i = 0; i < profiles.length; i++) {
       let flag;
@@ -49,11 +48,12 @@ export const LandingPage = (): ReactElement => {
   };
 
   const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
-    currentDir.forEach((el) => {
+    currentDir.forEach((el: string) => {
       if (String(el.match(/[^\s]+/)) === 'right') {
-        dispatch(addLike({
+        const res: RegExpMatchArray | null = el.match(/\d+/g)
+        res && dispatch(addLike({
           profileId: profileId,
-          givenLikeId: el.match(/\d+/g)
+          givenLikeId: +res
         }))
       }
     })
@@ -65,7 +65,6 @@ export const LandingPage = (): ReactElement => {
         <TopBarLandingPage />
       </div>
       <Searchbar key={Math.random()} />
-
       {currentUser.id ?
         <>
           <Link to={{

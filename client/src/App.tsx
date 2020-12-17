@@ -9,7 +9,7 @@ import { Chats } from './components/Chats/chats';
 import { Matches } from './components/Matches/matches';
 import { Swiping } from './components/Swiping/swiping'
 
-function App() {
+function App(): JSX.Element {
   return (
     <Provider store={store}>
       <Router>

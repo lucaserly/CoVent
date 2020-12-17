@@ -1,13 +1,51 @@
-import { User, UserActionTypes, SET_USER, } from '../../types/userTypes';
+import { UserActionTypes, SET_USER, } from '../../types/user/userActions';
+import { User, Profile, Swipe } from '../../types/user';
 
-export function userReducer(state = {}, action: UserActionTypes):User {
-    switch (action.type) {
+const initialSwipesState: Swipe = {
+  id: undefined,
+  swipeId: '',
+  createdAt: '',
+  updatedAt: '',
+  profileId: undefined
+}
+
+const initialReceivedLikeState: Profile = {
+  id: undefined,
+  age: '',
+  description: '',
+  gender: '',
+  location: '',
+  picture: '',
+  receivedLike: [],
+  swipes: [initialSwipesState]
+}
+
+const initialProfileState: Profile = {
+  id: undefined,
+  picture: '',
+  description: '',
+  age: '',
+  gender: '',
+  location: '',
+  hasNewMatch: false,
+  receivedLike: [initialReceivedLikeState],
+  swipes: [initialSwipesState],
+}
+
+const initialUserState: User = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  profile: initialProfileState
+}
+
+export function userReducer(state = initialUserState, action: UserActionTypes): User {
+  switch (action.type) {
     case SET_USER:
       return {
-       ...state, ...action.payload
+        ...state, ...action.payload
       }
-
-     default: return state
-    }
+    default: return state
+  }
 }
 

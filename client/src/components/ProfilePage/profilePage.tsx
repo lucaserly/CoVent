@@ -1,73 +1,68 @@
-import React from 'react';
-import { FormEvent, useState, useEffect } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../types/combinedStoreTypes';
-import { User } from "../../types/userTypes";
 import { Button, Modal } from 'react-bootstrap';
-import { profileUpdate, addCityToProfile, addCategoryToProfile } from '../../utils/systemFunction';
-import { ProfileNew, CityAdd } from "../../types/userLucasTypes";
-import './profilePage.css';
+import { profileUpdate, addCityToProfile, addCategoryToProfile, addLike } from '../../utils/systemFunction';
 import { Link } from 'react-router-dom';
 import { getAllProfiles } from './../../utils/userDatabaseFetch';
-import { addLike } from './../../utils/systemFunction';
-import { setUser } from '../../redux/userState/userActions';
 import { setDirection } from '../../redux/directionState/directionActions';
+import './profilePage.css';
+import { User, Profile, CityAdd } from '../../types/user';
+
+const categories = [
+  'Athletics',
+  'Ball Sports',
+  'Beach Sports',
+  'Body & Mind',
+  'Cars',
+  'City',
+  'Climbing',
+  'Combat Sports',
+  'Cycling',
+  'Dancing',
+  'Equestrianism',
+  'Fitness',
+  'For Fun',
+  'Games',
+  'Hiking',
+  'Ice',
+  'Motorcycles',
+  'Multi-Sport',
+  'Nature',
+  'Party',
+  'Photography',
+  'Piloting',
+  'Pool',
+  'Racket Sports',
+  'Rowing',
+  'Shooting',
+  'Sky',
+  'Slacklining',
+  'Snow',
+  'Strength',
+  'Traveling',
+  'Underwater',
+  'Water',
+  'Wind'
+]
+
+const initialProfileState: Profile = {
+  id: undefined,
+  picture: '',
+  description: '',
+  age: '',
+  gender: '',
+  location: '',
+  hasNewMatch: false,
+  receivedLike: [],
+  swipes: []
+}
 
 export const ProfilePage = (): JSX.Element => {
 
   const user = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const dispatch = useDispatch();
-
-  const initialState = {
-    picture: '',
-    description: '',
-    age: '',
-    gender: '',
-    location: '',
-  };
-
-  const initialStateCity: CityAdd = {
-    profileId: 0,
-    name: ''
-  };
-
-  const categories = [
-    'Athletics',
-    'Ball Sports',
-    'Beach Sports',
-    'Body & Mind',
-    'Cars',
-    'City',
-    'Climbing',
-    'Combat Sports',
-    'Cycling',
-    'Dancing',
-    'Equestrianism',
-    'Fitness',
-    'For Fun',
-    'Games',
-    'Hiking',
-    'Ice',
-    'Motorcycles',
-    'Multi-Sport',
-    'Nature',
-    'Party',
-    'Photography',
-    'Piloting',
-    'Pool',
-    'Racket Sports',
-    'Rowing',
-    'Shooting',
-    'Sky',
-    'Slacklining',
-    'Snow',
-    'Strength',
-    'Traveling',
-    'Underwater',
-    'Water',
-    'Wind'
-  ]
 
   const [show, setShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
@@ -77,46 +72,33 @@ export const ProfilePage = (): JSX.Element => {
   const [gender, setGender] = useState('')
   const [location, setLocation] = useState('')
   const [city, setCity] = useState('');
-  const [category, setCategory] = useState('');
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [receivedLikes, setReceivedLikes] = useState<any>([]);
-  const [likedProfiles, setLikedProfiles] = useState<any>([]);
-  const [matches, setMatches] = useState<any>([]);
-  const [profiles, setProfiles] = useState<ProfileNew[]>([]);
-
+  const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
-    if (user.profile && user.profile.receivedLike && user.profile.likedProfile && user.profile.matched) {
-      setReceivedLikes(user.profile.receivedLike)
-      setLikedProfiles(user.profile.likedProfile)
-      setMatches(user.profile.matched)
-    }
-
+    setReceivedLikes(user.profile.receivedLike)
     getAllProfiles()
       .then((list) => {
         const filteredList = list.filter((el) => el.id !== user.id)
         setProfiles(filteredList)
-        if (currentDirection.length && user.profile && user.profile.id) {
+        if (user.profile.id) {
           sendLikesToBackEnd(currentDirection, user.profile.id)
         }
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleCloseCity = () => setShowCityModal(false);
   const handleShowCity = () => setShowCityModal(true);
-  const handleShowCategory = () => setShowCategoryModal(true);
-  const handleCloseCategory = () => setShowCategoryModal(false);
 
-  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>, cb: any) => {
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>, cb: React.Dispatch<React.SetStateAction<string>>) => {
     cb(ev.target.value)
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-
-    if (user && user.profile) {
       const newUs: User = {
         ...user, profile: {
           age: age !== "" ? age : user.profile.age,
@@ -132,10 +114,10 @@ export const ProfilePage = (): JSX.Element => {
           picture: picture !== "" ? picture : user.profile.picture,
           receivedLike: user.profile.receivedLike,
           userId: user.id,
+          swipes: user.profile.swipes
         }
       }
       dispatch(profileUpdate(newUs))
-    }
   };
 
   const firstLetterUpper = (str: string): string => {
@@ -146,7 +128,7 @@ export const ProfilePage = (): JSX.Element => {
 
   const handleCitySubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (user.profile && user.profile.id) {
+    if (user.profile.id) {
       const cityObj: CityAdd = {
         profileId: user.profile.id,
         name: firstLetterUpper(city)
@@ -155,23 +137,25 @@ export const ProfilePage = (): JSX.Element => {
     }
   };
 
-  const handleCategorySubmit = (ev: any): any => {
-    setCategory(ev.target.value)
-    const categoryToSend = {
-      profileId: user.profile && user.profile.id,
-      name: ev.target.value
+  const handleCategorySubmit = (ev: FormEvent): void => {
+    const target = ev.target as HTMLInputElement
+    if (user.profile.id) {
+      const categoryToSend = {
+        profileId: user.profile.id,
+        name: target.value
+      }
+      dispatch(addCategoryToProfile(categoryToSend, user))
     }
-    dispatch(addCategoryToProfile(categoryToSend, user))
   };
 
-  const filterSwipedProfiles = (profiles: ProfileNew[], currentDir: string[]): any => {
+  const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | void => {
     const filteredByCity = filterByCity(profiles);
     const filteredByCityAndActivity = filterByActivity(filteredByCity)
 
     if (filteredByCityAndActivity) {
-      const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: any) => el.id !== user.id)
+      const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
       let filteredByPreviousSwipes = [];
-      if (user.profile && user.profile.swipes && user.profile.swipes.length > 0) {
+      if (user.profile.swipes.length > 0) {
         for (let a = 0; a < filteredByCityActivitySelf.length; a++) {
           let flag;
           for (let c = 0; c < user.profile.swipes.length; c++) {
@@ -234,24 +218,30 @@ export const ProfilePage = (): JSX.Element => {
     }
   };
 
-  const filterByCity = (profiles: ProfileNew[]): any => {
+  const filterByCity = (profiles: Profile[]): Profile[] | undefined => {
     if (user && user.profile && user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name) {
-      const res = profiles.filter((el) => {
+      const res = profiles.filter((el): boolean | undefined => {
         if (user && user.profile && user.profile.cities && user.profile.cities[0].name && el && el.cities && el.cities.length > 0) {
           if (el.cities && el.cities[0] && el.cities[0].name && user && user.profile && user.profile.cities && user.profile.cities[0]) {
             return el.cities[0].name === user.profile.cities[0].name;
+          } else {
+            return undefined;
           }
+        } else {
+          return undefined;
         }
       })
       return res;
     }
   }
 
-  const filterByActivity = (profiles: ProfileNew[]): any => {
+  const filterByActivity = (profiles: Profile[] | undefined): Profile[] | void => {
     if (profiles) {
-      const res = profiles.filter((el) => {
+      const res = profiles.filter((el): boolean | undefined => {
         if (user && user.profile && user.profile.categories && user.profile.categories.length > 0 && el.categories && el.categories.length > 0) {
           return el.categories[0].name === user.profile.categories[user.profile.categories.length - 1].name
+        } else {
+          return undefined;
         }
       })
       return res;
@@ -261,15 +251,16 @@ export const ProfilePage = (): JSX.Element => {
   const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
     currentDir.forEach((el) => {
       if (String(el.match(/[^\s]+/)) === 'right') {
-        dispatch(addLike({
+        const res: RegExpMatchArray | null = el.match(/\d+/g)
+        res && dispatch(addLike({
           profileId: profileId,
-          givenLikeId: el.match(/\d+/g)
+          givenLikeId: +res
         }))
       }
     })
   }
 
-  const filterNotMatchedYet = (obj: any): any => {
+  const filterNotMatchedYet = (obj: Profile[]): Profile[] => {
     const filteredByNotMatchedYet = [];
     if (user.profile && user.profile.matched && obj && obj.length > 0) {
       for (let i = 0; i < obj.length; i++) {
@@ -326,10 +317,10 @@ export const ProfilePage = (): JSX.Element => {
           </div>
 
           <div id="top_right_corner_btn">
-        
+
             <Button variant="primary" onClick={handleShow} className="profile_update-button">Edit Profile</Button>
             <Button variant="primary" onClick={handleShowCity} className="city_add">Pick a city</Button>
-          
+
           </div>
         </div>
 
@@ -338,7 +329,7 @@ export const ProfilePage = (): JSX.Element => {
           <div id="my-matches-area">
             <div id="my-matches-title">My matches</div>
             <div id="my-matches-list">
-              {user?.profile?.matched?.map((el: any, i: any) => {
+              {user?.profile?.matched?.map((el: Profile, i: number) => {
                 return (
                   <div id="match-container" key={i}>
                     <img src={el.picture} id="match-img" alt="profile pic" />
@@ -359,10 +350,10 @@ export const ProfilePage = (): JSX.Element => {
               <div className="invitations-list">
                 {user && user.profile && user.profile.likedProfile &&
                   user.profile.likedProfile[0] && user.profile.likedProfile[0].user
-                  && filterNotMatchedYet(user.profile.likedProfile).map((el: any, i: any) => {
+                  && filterNotMatchedYet(user.profile.likedProfile).map((el: Profile, i: number) => {
                     return (
                       <div id="invitor-area" key={i}>
-                        <img className="invitor-img" src={el.picture} />
+                        <img className="invitor-img" src={el.picture} alt="invitor" />
                         <div id="invitor-details">
                           <div className="invitor-name" >{el.user?.firstName}</div>
                           <div className="invitor-city" >{el.location}</div>
@@ -380,10 +371,10 @@ export const ProfilePage = (): JSX.Element => {
                 {
                   user && user.profile && user.profile.receivedLike &&
                   user.profile.receivedLike[0] && user.profile.receivedLike[0].user
-                  && filterNotMatchedYet(receivedLikes).map((el: any, i: any) => {
+                  && filterNotMatchedYet(receivedLikes).map((el: Profile, i: number) => {
                     return (
                       <div id="invitor-area" key={i}>
-                        <img className="invitor-img" src={el.picture} />
+                        <img className="invitor-img" src={el.picture} alt="invitor" />
                         <div id="invitor-details">
                           <div className="invitor-name" >{el.user?.firstName}</div>
                           <div className="invitor-city" >{el.location}</div>
@@ -392,18 +383,17 @@ export const ProfilePage = (): JSX.Element => {
                         <div id="evaluate-invitation-btn">
 
                           <Button id="accept-invitation-btn" onClick={(e) => {
-                            setReceivedLikes((prevList: any) => {
-                              return prevList.filter((element: any) => {
+                            setReceivedLikes((prevList: Profile[]) => {
+                              return prevList.filter((element: Profile) => {
                                 return element.id !== el.id
                               })
                             })
-                            setMatches((prevList: any) => [...prevList, el])
                             dispatch(setDirection([`right id:${el.id}`]))
                             if (user && user.profile) {
                               sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
                             }
                           }}>√</Button>
-                          
+
                           <Button id="reject-invitation-btn">X</Button>
                         </div>
                       </div>

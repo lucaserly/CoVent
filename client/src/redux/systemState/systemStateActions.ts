@@ -1,11 +1,9 @@
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-import { SystemState, SystemActionTypes, SET_USER_FIREBASE_ID, SET_USER_AS_LOGGED_IN, SET_USER_AS_LOGGED_OUT, SET_USER_NEW_USER_BOOLEAN } from './../../types/systemTypes';
+import { SystemActionTypes, SET_USER_FIREBASE_ID, SET_USER_AS_LOGGED_IN, SET_USER_AS_LOGGED_OUT, SET_USER_NEW_USER_BOOLEAN } from './../../types/systemTypes';
 
-
-export function setUserFirebaseId(firebaseId: string | undefined): SystemActionTypes {
+export function setUserFirebaseId(firebaseId: string): SystemActionTypes {
   return {
     type: SET_USER_FIREBASE_ID,
-    payload: firebaseId  
+    payload: firebaseId
   }
 }
 export function setUserToLoggedIn(): SystemActionTypes {

@@ -4,13 +4,17 @@ import { RootState } from '../../types/combinedStoreTypes'
 import { FormEvent, useState } from 'react'
 import { setUser } from "../../redux/userState/userActions";
 import { useDispatch, useSelector } from "react-redux";
-import { Profile, User } from "../../types/userTypes"
+import { User, ProfileDescription } from '../../types/user';
 import { userSignUp } from '../../utils/systemFunction';
 
-export const DescriptionForm = ({ setShowDescriptionModal }: any): JSX.Element => {
+interface setShowDescriptionModalProp {
+    setShowDescriptionModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const DescriptionForm = ({ setShowDescriptionModal }: setShowDescriptionModalProp): JSX.Element => {
     const currentUser = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch();
-    const [newUserDescription, setNewUserDescription] = useState<Profile>({ gender: '', age: '', location: '' });
+    const [newUserDescription, setNewUserDescription] = useState<ProfileDescription>({ gender: '', age: '', location: '' });
 
     function handleChange(ev: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = ev.target;
@@ -19,9 +23,9 @@ export const DescriptionForm = ({ setShowDescriptionModal }: any): JSX.Element =
 
     function handleDescription(e: FormEvent) {
         e.preventDefault()
-        const newUser: User = 
+        const newUser: User =
         {
-            ...currentUser, 
+            ...currentUser,
             profile:
                 { ...currentUser.profile, ...newUserDescription }
         }
