@@ -9,10 +9,10 @@ At the crossroads between MeetUp and Tinder, CoVent is a web application that co
 <img width="766" alt="Screenshot 2020-12-12 at 17 14 56" src="https://user-images.githubusercontent.com/31804969/102108480-4792f680-3e33-11eb-9b42-88d288d4a781.png">
 
 
-<img width="1434" alt="Screenshot 2020-12-15 at 18 11 19" src="https://user-images.githubusercontent.com/31804969/102248074-0c5ef900-3f01-11eb-8565-c8975e600fb0.png">
+<!-- <img width="1434" alt="Screenshot 2020-12-15 at 18 11 19" src="https://user-images.githubusercontent.com/31804969/102248074-0c5ef900-3f01-11eb-8565-c8975e600fb0.png"> -->
 
 
-<img width="1435" alt="Screenshot 2020-12-15 at 18 13 02" src="https://user-images.githubusercontent.com/31804969/102248280-4b8d4a00-3f01-11eb-89b7-2530e550904e.png">
+<!-- <img width="1435" alt="Screenshot 2020-12-15 at 18 13 02" src="https://user-images.githubusercontent.com/31804969/102248280-4b8d4a00-3f01-11eb-89b7-2530e550904e.png"> -->
 
 
 ## Getting started
