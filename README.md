@@ -6,7 +6,7 @@ At the crossroads between MeetUp and Tinder, CoVent is a web application that co
 
 ## Screenshots
 
-![Untitled design](https://user-images.githubusercontent.com/62465231/102711904-5f4bfe00-42bd-11eb-9b3a-8675f8ccb8d4.jpg)
+![Webp net-gifmaker-2](https://user-images.githubusercontent.com/62465231/102712289-46911780-42c0-11eb-9a92-02101052d00f.gif)
 
 ## Getting started
 
