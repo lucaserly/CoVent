@@ -293,8 +293,8 @@ export const ProfilePage = (): JSX.Element => {
 
             <div id="user-infos">
               <div className="user_first_name">{user.firstName}</div>
-              <div id="user-age">{user.profile && user.profile.age} years old</div>
-              <div id="selected-city">{user && user.profile && user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name}</div>
+              <div id="user-age">{user.profile.age} years old</div>
+              <div id="selected-city">{user.profile.cities[0].name}</div>
               <Link to={{
                 pathname: '/chats',
                 state: {

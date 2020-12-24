@@ -6,7 +6,7 @@ export interface City {
   cityProfiles: {
     createdAt: string,
     updatedAt: string,
-    cityId: number,
-    profileId: number
+    cityId: number | undefined,
+    profileId: number | undefined
   }
 }

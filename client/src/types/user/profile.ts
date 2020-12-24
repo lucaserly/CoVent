@@ -24,6 +24,7 @@ export interface Profile {
   receivedLikes?: ReceivedLike,
   matches?: Match,
   categories?: Category[],
-  cities?: City[],
+
+  cities: City[],
   swipes: Swipe[],
 }

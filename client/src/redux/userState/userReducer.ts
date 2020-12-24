@@ -1,11 +1,24 @@
 import { UserActionTypes, SET_USER, } from '../../types/user/userActions';
-import { User, Profile, Swipe, Match } from '../../types/user';
+import { User, Profile, Swipe, Match, City } from '../../types/user';
 
 export const initialMatchesState: Match = {
   createdAt: '',
   updatedAt: '',
   matched: undefined,
   partner: undefined,
+}
+
+export const initialCitiesState: City = {
+  id: '',
+  name: '',
+  createdAt: '',
+  updatedAt: '',
+  cityProfiles: {
+    createdAt: '',
+    updatedAt: '',
+    cityId: undefined,
+    profileId: undefined,
+  }
 }
 
 // export const initialMatchedState: Profile = {
@@ -46,7 +59,8 @@ export const initialReceivedLikeState: Profile = {
   hasNewMatch: false,
   receivedLike: [],
   swipes: [initialSwipesState],
-  matches: initialMatchesState
+  matches: initialMatchesState,
+  cities: [initialCitiesState]
 }
 
 export const initialProfileState: Profile = {
@@ -61,7 +75,8 @@ export const initialProfileState: Profile = {
   receivedLike: [initialReceivedLikeState],
   swipes: [initialSwipesState],
   // matched: [initialMatchedState],
-  matches: initialMatchesState
+  matches: initialMatchesState,
+  cities: [initialCitiesState]
 }
 
 export const initialUserState: User = {
