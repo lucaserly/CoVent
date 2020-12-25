@@ -9,13 +9,11 @@ interface SendLikesToBackEnd {
   (currentDir: string[], profileId: number): void
 }
 
-export const ButtonInvitations = (props: { el: Profile
-  setReceivedLikes: Dispatch<SetStateAction<Profile[]>>,
-  sendLikesToBackEnd: SendLikesToBackEnd
-}): JSX.Element => {
+export const ButtonInvitations = (props: { el: Profile, setReceivedLikes: Dispatch<SetStateAction<Profile[]>>, sendLikesToBackEnd: SendLikesToBackEnd }): JSX.Element => {
+
+  const { el, setReceivedLikes, sendLikesToBackEnd } = props;
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user)
-  const { el, setReceivedLikes, sendLikesToBackEnd } = props;
 
   return (
     <div id="evaluate-invitation-btn">
