@@ -40,7 +40,7 @@ const categories = [
   'Wind'
 ]
 
-export const Categories = (): JSX.Element => {
+export const CategoriesList = (): JSX.Element => {
   const user = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch();
 

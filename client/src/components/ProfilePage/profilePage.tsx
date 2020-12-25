@@ -9,7 +9,10 @@ import { setDirection } from '../../redux/directionState/directionActions';
 import './profilePage.css';
 import { User, Profile, CityAdd } from '../../types/user';
 import { initialProfileState } from './../../redux/userState/userReducer';
-import { Categories } from './categories';
+import { CategoriesList } from './categoriesList';
+import { MyMatches } from './myMatches';
+import { InvitationsSent } from './invitationsSent';
+import { InvitationsReceived } from './invitationsReceived';
 
 export const ProfilePage = (): JSX.Element => {
 
@@ -216,7 +219,7 @@ export const ProfilePage = (): JSX.Element => {
 
     <div id="profile_body">
 
-      <Categories />
+      <CategoriesList />
 
       <div className="profile_page_content">
         <div className="profile_page_header_container">
@@ -224,13 +227,11 @@ export const ProfilePage = (): JSX.Element => {
             {user.profile.picture ? <div className="profile_page_image_container">
               <img className="profile_page_image" src={user.profile.picture} alt="profile" />
             </div> : <></>}
-
             <div id="user-infos">
               <div className="user_first_name">{user.firstName}</div>
               <div id="user-age">{user.profile.age} years old</div>
               <div id="selected-city">{user.profile.cities.length > 0 && user.profile.cities[0].name}</div>
               <div id="selected-city">{user.profile.categories.length > 0 && user.profile.categories[0].name}</div>
-
               <Link to={{
                 pathname: '/chats',
                 state: {
@@ -264,46 +265,22 @@ export const ProfilePage = (): JSX.Element => {
         </div>
 
         <div id="profile-page-body">
-          <div id="my-matches-area">
-            <div id="my-matches-title">My matches</div>
-            <div id="my-matches-list">
-              {user.profile.matched && user.profile.matched.map((el: Profile, i: number) => {
-                return (
-                  <div id="match-container" key={i}>
-                    <img src={el.picture} id="match-img" alt="profile pic" />
-                    <div id="match-infos">
-                      <div className="invitor-name" >{el.user?.firstName}</div>
-                      <div className="invitor-city" >{el.location}</div>
-                      <div id="match-description">{el.description}</div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+
+          <MyMatches />
 
           <div id="invitations-grid-area">
             <div className="invitations-container" id="invitations-sent">
               <div className="invitations-container-title">You have invited them</div>
-              <div className="invitations-list">
-                {filterNotMatchedYet(user.profile.likedProfile).map((el: Profile, i: number) => {
-                  return (
-                    <div id="invitor-area" key={i}>
-                      <img className="invitor-img" src={el.picture} alt="invitor" />
-                      <div id="invitor-details">
-                        <div className="invitor-name" >{el.user?.firstName}</div>
-                        <div className="invitor-city" >{el.location}</div>
-                        <button id="invitor-view-profile-btn">View profile</button>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+              <InvitationsSent list={user.profile.likedProfile} cb={filterNotMatchedYet} />
             </div>
 
             <div className="invitations-container" id="invitations-received">
               <div className="invitations-container-title">They have invited you</div>
-              <div className="invitations-list">
+
+              <InvitationsReceived list={receivedLikes} cb={filterNotMatchedYet} setReceivedLikes={setReceivedLikes}
+                sendLikesToBackEnd={sendLikesToBackEnd} />
+
+              {/* <div className="invitations-list">
                 {filterNotMatchedYet(receivedLikes).map((el: Profile, i: number) => {
                   return (
                     <div id="invitor-area" key={i}>
@@ -333,7 +310,7 @@ export const ProfilePage = (): JSX.Element => {
                   )
                 })
                 }
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
