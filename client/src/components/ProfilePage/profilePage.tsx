@@ -43,8 +43,8 @@ export const ProfilePage = (): JSX.Element => {
   const handleShowCity = () => setShowCityModal(true);
 
   const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | void => {
-    const filteredByCity = filterByCity(profiles);
-    const filteredByCityAndActivity = filterByActivity(filteredByCity)
+    const filteredByCity = filterByCriteria(profiles, user.profile, 'cities', 'name');
+    const filteredByCityAndActivity = filterByCriteria(filteredByCity, user.profile, 'categories', 'name');
 
     if (filteredByCityAndActivity) {
       const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
@@ -112,35 +112,12 @@ export const ProfilePage = (): JSX.Element => {
     }
   };
 
-  const filterByCity = (profiles: Profile[]): Profile[] | undefined => {
-    if (user.profile.cities.length > 0 && user.profile.cities[0].name) {
-      const res = profiles.filter((el): boolean | undefined => {
-        return el.cities[0].name === user.profile.cities[0].name;
-      })
-      return res;
-    }
-  }
-
-  const filterByActivity = (profiles: Profile[] | undefined): Profile[] | void => {
-    if (profiles) {
-      const res = profiles.filter((el): boolean | undefined => {
-        return el.categories[0].name === user.profile.categories[user.profile.categories.length - 1].name
-      })
-      return res;
-    }
-  }
-
-  const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
-    currentDir.forEach((el) => {
-      if (String(el.match(/[^\s]+/)) === 'right') {
-        const res: RegExpMatchArray | null = el.match(/\d+/g)
-        res && dispatch(addLike({
-          profileId: profileId,
-          givenLikeId: +res
-        }))
-      }
+  const filterByCriteria = (a: any, b: any, criteria: string, property: string): Profile[] => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    const res = a.filter((el: any): boolean => {                                                // eslint-disable-line @typescript-eslint/no-explicit-any
+      return el[criteria][0][property] === b[criteria][0][property]
     })
-  }
+    return res
+  };
 
   const filterNotMatchedYet = (obj: Profile[]): Profile[] => {
     const filteredByNotMatchedYet = [];
@@ -161,7 +138,21 @@ export const ProfilePage = (): JSX.Element => {
       }
     }
     return filteredByNotMatchedYet;
-  }
+  };
+
+  const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
+    currentDir.forEach((el) => {
+      if (String(el.match(/[^\s]+/)) === 'right') {
+        const res: RegExpMatchArray | null = el.match(/\d+/g)
+        res && dispatch(addLike({
+          profileId: profileId,
+          givenLikeId: +res
+        }))
+      }
+    })
+  };
+
+
 
   return (
 
