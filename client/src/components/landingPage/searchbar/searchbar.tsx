@@ -34,43 +34,31 @@ export const Searchbar = (): ReactElement => {
 
   const handleLike = (e: FormEvent, id: number) => {
     e.preventDefault()
-    if (currentUser.profile) {
-      const like: LikeProfile = {
-        profileId: currentUser.profile.id,
-        givenLikeId: id,
-      }
-      dispatch(addLike(like))
+    const like: LikeProfile = {
+      profileId: currentUser.profile.id,
+      givenLikeId: id,
     }
+    dispatch(addLike(like))
   }
 
   let renderUserWithCities;
   let renderAllUsers;
 
-  if (users[0] && users[0].cities) {
+  if (users.length > 0) {
     renderUserWithCities = (
-      users.filter(user => user.cities && user.cities.length
-        && user.cities[0].name.toLowerCase().includes(city)).map((el, i): JSX.Element | void => {
-          if (el && el.id) {
-            return <div key={i} className="image_container">
-              <img src={el.picture} className="searchbar_image" alt="profile pic" />
-              <div id="lp-profile-description">
-                <div id="user-description-text">{el.description}</div>
-                <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
-              </div>
+      users.filter(user => user.cities.length > 0
+        && user.cities[0].name.toLowerCase().includes(city)).map((el, i): JSX.Element => {
+          return <div key={i} className="image_container">
+            <img src={el.picture} className="searchbar_image" alt="profile pic" />
+            <div id="lp-profile-description">
+              <div id="user-description-text">{el.description}</div>
+              <Button id="invitation-btn" onClick={(e) => { handleLike(e, Number(el.id)) }}>Interested</Button>
             </div>
-          }
-          else {
-            return undefined;
-          }
-        }
-        )
-    )
-  }
-
-  if (users[0]) {
+          </div>
+        }))
     renderAllUsers = (
       users.map((el, i): JSX.Element | void => {
-        if (el.user && el.user.firstName) {
+        if (el.user) {
           const temp = el.user.firstName?.charAt(0).toUpperCase() + el.user.firstName?.slice(1);
           return <div key={i} id="user-box">
             <div className="image_container">

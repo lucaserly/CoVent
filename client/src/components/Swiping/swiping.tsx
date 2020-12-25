@@ -13,7 +13,7 @@ export const Swiping = (prop: SwipeInterface): JSX.Element => {
   return (
     <>
       <div className="cards__container">
-        {profiles && profiles.map((el: Profile): JSX.Element | void => {
+        {profiles.map((el: Profile): JSX.Element | void => {
           if (el.user) {
             return <TinderCard
               dispat={dispatch}

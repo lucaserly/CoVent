@@ -15,15 +15,16 @@ export interface Profile {
   location: string,
   userId: number | undefined,
   hasNewMatch: boolean,
-
-  likedProfile?: Profile[],
+  likedProfile: Profile[],
   receivedLike: Profile[],
+
   matched?: Profile[],
   user?: User,
   likedProfiles?: LikedProfile,
   receivedLikes?: ReceivedLike,
   matches?: Match,
-  categories?: Category[],
-  cities?: City[],
+
+  categories: Category[],
+  cities: City[],
   swipes: Swipe[],
 }

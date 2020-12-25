@@ -2,50 +2,14 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../types/combinedStoreTypes';
 import { Button, Modal } from 'react-bootstrap';
-import { profileUpdate, addCityToProfile, addCategoryToProfile, addLike } from '../../utils/systemFunction';
+import { profileUpdate, addCityToProfile, addLike } from '../../utils/systemFunction';
 import { Link } from 'react-router-dom';
 import { getAllProfiles } from './../../utils/userDatabaseFetch';
 import { setDirection } from '../../redux/directionState/directionActions';
 import './profilePage.css';
 import { User, Profile, CityAdd } from '../../types/user';
 import { initialProfileState } from './../../redux/userState/userReducer';
-
-const categories = [
-  'Athletics',
-  'Ball Sports',
-  'Beach Sports',
-  'Body & Mind',
-  'Cars',
-  'City',
-  'Climbing',
-  'Combat Sports',
-  'Cycling',
-  'Dancing',
-  'Equestrianism',
-  'Fitness',
-  'For Fun',
-  'Games',
-  'Hiking',
-  'Ice',
-  'Motorcycles',
-  'Multi-Sport',
-  'Nature',
-  'Party',
-  'Photography',
-  'Piloting',
-  'Pool',
-  'Racket Sports',
-  'Rowing',
-  'Shooting',
-  'Sky',
-  'Slacklining',
-  'Snow',
-  'Strength',
-  'Traveling',
-  'Underwater',
-  'Water',
-  'Wind'
-]
+import { Categories } from './categories';
 
 export const ProfilePage = (): JSX.Element => {
 
@@ -88,26 +52,26 @@ export const ProfilePage = (): JSX.Element => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-      const newUs: User = {
-        ...user, profile: {
-          age: age !== "" ? age : user.profile.age,
-          categories: user.profile.categories,
-          cities: user.profile.cities,
-          description: description !== "" ? description : user.profile.description,
-          gender: gender !== "" ? gender : user.profile.gender,
-          hasNewMatch: user.profile.hasNewMatch,
-          id: user.profile.id,
-          likedProfile: user.profile.likedProfile,
-          location: location !== "" ? location : user.profile.location,
-          matched: user.profile.matched,
-          picture: picture !== "" ? picture : user.profile.picture,
-          receivedLike: user.profile.receivedLike,
-          userId: user.id,
-          swipes: user.profile.swipes,
-          matches: user.profile.matches
-        }
+    const newUs: User = {
+      ...user, profile: {
+        age: age !== "" ? age : user.profile.age,
+        categories: user.profile.categories,
+        cities: user.profile.cities,
+        description: description !== "" ? description : user.profile.description,
+        gender: gender !== "" ? gender : user.profile.gender,
+        hasNewMatch: user.profile.hasNewMatch,
+        id: user.profile.id,
+        likedProfile: user.profile.likedProfile,
+        location: location !== "" ? location : user.profile.location,
+        matched: user.profile.matched,
+        picture: picture !== "" ? picture : user.profile.picture,
+        receivedLike: user.profile.receivedLike,
+        userId: user.id,
+        swipes: user.profile.swipes,
+        matches: user.profile.matches
       }
-      dispatch(profileUpdate(newUs))
+    }
+    dispatch(profileUpdate(newUs))
   };
 
   const firstLetterUpper = (str: string): string => {
@@ -124,17 +88,6 @@ export const ProfilePage = (): JSX.Element => {
         name: firstLetterUpper(city)
       }
       dispatch(addCityToProfile(cityObj, user))
-    }
-  };
-
-  const handleCategorySubmit = (ev: FormEvent): void => {
-    const target = ev.target as HTMLInputElement
-    if (user.profile.id) {
-      const categoryToSend = {
-        profileId: user.profile.id,
-        name: target.value
-      }
-      dispatch(addCategoryToProfile(categoryToSend, user))
     }
   };
 
@@ -209,17 +162,9 @@ export const ProfilePage = (): JSX.Element => {
   };
 
   const filterByCity = (profiles: Profile[]): Profile[] | undefined => {
-    if (user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name) {
+    if (user.profile.cities.length > 0 && user.profile.cities[0].name) {
       const res = profiles.filter((el): boolean | undefined => {
-        if (user && user.profile && user.profile.cities && user.profile.cities[0].name && el && el.cities && el.cities.length > 0) {
-          if (el.cities && el.cities[0] && el.cities[0].name && user && user.profile && user.profile.cities && user.profile.cities[0]) {
-            return el.cities[0].name === user.profile.cities[0].name;
-          } else {
-            return undefined;
-          }
-        } else {
-          return undefined;
-        }
+        return el.cities[0].name === user.profile.cities[0].name;
       })
       return res;
     }
@@ -228,11 +173,7 @@ export const ProfilePage = (): JSX.Element => {
   const filterByActivity = (profiles: Profile[] | undefined): Profile[] | void => {
     if (profiles) {
       const res = profiles.filter((el): boolean | undefined => {
-        if (user && user.profile && user.profile.categories && user.profile.categories.length > 0 && el.categories && el.categories.length > 0) {
-          return el.categories[0].name === user.profile.categories[user.profile.categories.length - 1].name
-        } else {
-          return undefined;
-        }
+        return el.categories[0].name === user.profile.categories[user.profile.categories.length - 1].name
       })
       return res;
     }
@@ -252,11 +193,11 @@ export const ProfilePage = (): JSX.Element => {
 
   const filterNotMatchedYet = (obj: Profile[]): Profile[] => {
     const filteredByNotMatchedYet = [];
-    if (user.profile && user.profile.matched && obj && obj.length > 0) {
+    if (user.profile.matched && obj.length > 0) {
       for (let i = 0; i < obj.length; i++) {
         let flag;
-        for (let a = 0; a < user.profile?.matched?.length; a++) {
-          if (Number(user.profile?.matched[a].id) === Number(obj[i].id)) {
+        for (let a = 0; a < user.profile.matched.length; a++) {
+          if (Number(user.profile.matched[a].id) === Number(obj[i].id)) {
             flag = true;
             break;
           }
@@ -274,52 +215,59 @@ export const ProfilePage = (): JSX.Element => {
   return (
 
     <div id="profile_body">
-      <div id="sidebar-swipes">
-        <div id="sidebar-swipes-title">Swipe by categories</div>
-        <div id="sidebar-swipes-category-list">
-          {categories.map((el, i) => {
-            return <option onClick={(e) => { handleCategorySubmit(e) }} id="sidebar-swipe-element" key={i} value={el}>{el}</option>
-          })
-          }
-        </div>
-      </div>
+
+      <Categories />
 
       <div className="profile_page_content">
         <div className="profile_page_header_container">
           <div id="profile-infos-picture">
-            {user && user.profile && user.profile.picture ? <div className="profile_page_image_container">
-              <img className="profile_page_image" src={user.profile?.picture} alt="profile" />
+            {user.profile.picture ? <div className="profile_page_image_container">
+              <img className="profile_page_image" src={user.profile.picture} alt="profile" />
             </div> : <></>}
 
             <div id="user-infos">
               <div className="user_first_name">{user.firstName}</div>
-              <div id="user-age">{user.profile && user.profile.age} years old</div>
-              <div id="selected-city">{user && user.profile && user.profile.cities && user.profile.cities[0] && user.profile.cities[0].name}</div>
+              <div id="user-age">{user.profile.age} years old</div>
+              <div id="selected-city">{user.profile.cities.length > 0 && user.profile.cities[0].name}</div>
+              <div id="selected-city">{user.profile.categories.length > 0 && user.profile.categories[0].name}</div>
+
               <Link to={{
                 pathname: '/chats',
                 state: {
-                  matches: user.profile && user.profile.matched
+                  matches: user.profile.matched
                 }
               }}>
                 <Button id="chats-link-btn">Chat Room</Button>
               </Link>
+
+              <Link to="/matches">
+                <Button id="chats-link-btn">Matches</Button>
+              </Link>
+
+
+              <Link to={{
+                pathname: '/swiping',
+                state: {
+                  profiles: filterSwipedProfiles(profiles, currentDirection),
+                }
+              }}>
+                <Button id="chats-link-btn">Swiping</Button>
+              </Link>
+
             </div>
           </div>
 
           <div id="top_right_corner_btn">
-
             <Button variant="primary" onClick={handleShow} className="profile_update-button">Edit Profile</Button>
             <Button variant="primary" onClick={handleShowCity} className="city_add">Pick a city</Button>
-
           </div>
         </div>
 
         <div id="profile-page-body">
-
           <div id="my-matches-area">
             <div id="my-matches-title">My matches</div>
             <div id="my-matches-list">
-              {user?.profile?.matched?.map((el: Profile, i: number) => {
+              {user.profile.matched && user.profile.matched.map((el: Profile, i: number) => {
                 return (
                   <div id="match-container" key={i}>
                     <img src={el.picture} id="match-img" alt="profile pic" />
@@ -338,57 +286,52 @@ export const ProfilePage = (): JSX.Element => {
             <div className="invitations-container" id="invitations-sent">
               <div className="invitations-container-title">You have invited them</div>
               <div className="invitations-list">
-                {user && user.profile && user.profile.likedProfile &&
-                  user.profile.likedProfile[0] && user.profile.likedProfile[0].user
-                  && filterNotMatchedYet(user.profile.likedProfile).map((el: Profile, i: number) => {
-                    return (
-                      <div id="invitor-area" key={i}>
-                        <img className="invitor-img" src={el.picture} alt="invitor" />
-                        <div id="invitor-details">
-                          <div className="invitor-name" >{el.user?.firstName}</div>
-                          <div className="invitor-city" >{el.location}</div>
-                          <button id="invitor-view-profile-btn">View profile</button>
-                        </div>
+                {filterNotMatchedYet(user.profile.likedProfile).map((el: Profile, i: number) => {
+                  return (
+                    <div id="invitor-area" key={i}>
+                      <img className="invitor-img" src={el.picture} alt="invitor" />
+                      <div id="invitor-details">
+                        <div className="invitor-name" >{el.user?.firstName}</div>
+                        <div className="invitor-city" >{el.location}</div>
+                        <button id="invitor-view-profile-btn">View profile</button>
                       </div>
-                    )
-                  })}
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
             <div className="invitations-container" id="invitations-received">
               <div className="invitations-container-title">They have invited you</div>
               <div className="invitations-list">
-                {
-                  user && user.profile && user.profile.receivedLike &&
-                  user.profile.receivedLike[0] && user.profile.receivedLike[0].user
-                  && filterNotMatchedYet(receivedLikes).map((el: Profile, i: number) => {
-                    return (
-                      <div id="invitor-area" key={i}>
-                        <img className="invitor-img" src={el.picture} alt="invitor" />
-                        <div id="invitor-details">
-                          <div className="invitor-name" >{el.user?.firstName}</div>
-                          <div className="invitor-city" >{el.location}</div>
-                          <button id="invitor-view-profile-btn">View profile</button>
-                        </div>
-                        <div id="evaluate-invitation-btn">
-
-                          <Button id="accept-invitation-btn" onClick={(e) => {
-                            setReceivedLikes((prevList: Profile[]) => {
-                              return prevList.filter((element: Profile) => {
-                                return element.id !== el.id
-                              })
-                            })
-                            dispatch(setDirection([`right id:${el.id}`]))
-                            if (user && user.profile) {
-                              sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
-                            }
-                          }}>√</Button>
-
-                          <Button id="reject-invitation-btn">X</Button>
-                        </div>
+                {filterNotMatchedYet(receivedLikes).map((el: Profile, i: number) => {
+                  return (
+                    <div id="invitor-area" key={i}>
+                      <img className="invitor-img" src={el.picture} alt="invitor" />
+                      <div id="invitor-details">
+                        <div className="invitor-name" >{el.user?.firstName}</div>
+                        <div className="invitor-city" >{el.location}</div>
+                        <button id="invitor-view-profile-btn">View profile</button>
                       </div>
-                    )
-                  })
+                      <div id="evaluate-invitation-btn">
+
+                        <Button id="accept-invitation-btn" onClick={(e) => {
+                          setReceivedLikes((prevList: Profile[]) => {
+                            return prevList.filter((element: Profile) => {
+                              return element.id !== el.id
+                            })
+                          })
+                          dispatch(setDirection([`right id:${el.id}`]))
+                          if (user && user.profile) {
+                            sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
+                          }
+                        }}>√</Button>
+
+                        <Button id="reject-invitation-btn">X</Button>
+                      </div>
+                    </div>
+                  )
+                })
                 }
               </div>
             </div>
@@ -401,7 +344,6 @@ export const ProfilePage = (): JSX.Element => {
               <Modal.Header>
                 <Modal.Title id="edit-profile-title">Edit Your Profile</Modal.Title>
                 <Modal.Body>
-
                   <form id="edit-profile-input-list">
                     <input className="edit-profile-input-field" name="picture" id="" placeholder="Picture" onChange={(e) => {
                       handleChange(e, setPicture)
@@ -419,7 +361,6 @@ export const ProfilePage = (): JSX.Element => {
                       handleChange(e, setLocation)
                     }}></input>
                   </form>
-
                 </Modal.Body>
                 <Modal.Footer>
 
@@ -464,29 +405,6 @@ export const ProfilePage = (): JSX.Element => {
           </Modal>
         </div>
       </div>
-
-      <Link to={{
-        pathname: '/swiping',
-        state: {
-          profiles: filterSwipedProfiles(profiles, currentDirection),
-        }
-      }}>
-        <Button>Swiping</Button>
-      </Link>
-
-      <Link to="/matches">
-        <Button>Matches</Button>
-      </Link>
-
-      <Link to={{
-        pathname: '/chats',
-        state: {
-          matches: user.profile && user.profile.matched
-        }
-      }}>
-        <Button>Chats</Button>
-      </Link>
-
     </div>
   )
 }

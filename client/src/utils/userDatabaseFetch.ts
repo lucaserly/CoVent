@@ -143,7 +143,7 @@ export const addSwipe = (swipe: { profileId: number, swipeId: number }): Promise
   })
 };
 
-export const addMsg = (msg: Messaged): Promise<Response | undefined> => {
+export const addMsg = (msg: Messaged): Promise<Response> => {
   return fetchRequest(`/message`, {
     method: "POST",
     headers: {

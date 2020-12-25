@@ -9,7 +9,6 @@ import { SystemActionTypes } from '../types/systemTypes';
 import { UserActionTypes } from '../types/user/userActions';
 import { initialUserState } from './../redux/userState/userReducer';
 
-// here make itnerface credentials interface -> then later on you userfirebase interface
 export const userLogin = (creds: UserFireBase) => {
     return (dispatch: Dispatch<SystemActionTypes | UserActionTypes>): void => {
         fire

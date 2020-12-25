@@ -12,9 +12,7 @@ export const Chats = (): JSX.Element => {
       <div id="chat-title">The CoVent Chat</div>
       <div id="chat-subtitle">Join the conversation with one of your matches</div>
       <div id="matches-list">
-        {
-          currentUser.profile &&
-          currentUser.profile.matched &&
+        {currentUser.profile.matched &&
           currentUser.profile.matched.map((el: Profile, i: number) =>
             <div id="match-person-area" key={i}>
               <div>

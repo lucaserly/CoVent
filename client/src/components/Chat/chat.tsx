@@ -12,7 +12,7 @@ export const Chat = (props: ChatInterface): JSX.Element => {
   const [conversation, setConversation] = useState<Message[]>([]);
 
   useEffect(() => {
-    if (currentUser.profile && currentUser.profile.id) {
+    if (currentUser.profile.id) {
       getMsgsByProfileIdAndReceiverId(currentUser.profile.id, props.location.state.id)
         .then((msgs: Message[]) => {
           setConversation(msgs)
@@ -27,25 +27,23 @@ export const Chat = (props: ChatInterface): JSX.Element => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (currentUser && currentUser.profile) {
-      const messageToSend = {
-        text: message,
-        profileId: currentUser.profile.id,
-        targetId: props.location.state.id
-      }
-      const messageTosave = {
-        id: Math.random(),
-        text: message,
-        profileId: Number(currentUser.profile.id),
-        receivedMessageId: props.location.state.id,
-        sentMessageId: Number(currentUser.profile.id),
-        createdAt: 'from front end',
-        updatedAt: 'from front end'
-      }
-      addMsg(messageToSend)
-      setConversation([...conversation, messageTosave])
-      setMessage('')
+    const messageToSend = {
+      text: message,
+      profileId: currentUser.profile.id,
+      targetId: props.location.state.id
     }
+    const messageTosave = {
+      id: Math.random(),
+      text: message,
+      profileId: Number(currentUser.profile.id),
+      receivedMessageId: props.location.state.id,
+      sentMessageId: Number(currentUser.profile.id),
+      createdAt: 'from front end',
+      updatedAt: 'from front end'
+    }
+    addMsg(messageToSend)
+    setConversation([...conversation, messageTosave])
+    setMessage('')
   };
 
   return (
@@ -67,20 +65,15 @@ export const Chat = (props: ChatInterface): JSX.Element => {
         {conversation.map((el, i) => {
           return (
             <div id="chat-container" key={i}>
-              <div id="userName">{
-                currentUser.profile && currentUser.profile.id
-                  && el.sentMessageId === currentUser.profile.id ?
-                  <div id="chatter-current-user">{currentUser.firstName}</div>
-                  : <div id="chatter-other-user">{props.location.state.firstName}</div>}
+              <div id="userName">{el.sentMessageId === currentUser.profile.id ?
+                <div id="chatter-current-user">{currentUser.firstName}</div>
+                : <div id="chatter-other-user">{props.location.state.firstName}</div>}
               </div>
 
               <div id="chat">
-                {
-                  currentUser.profile && currentUser.profile.id
-                    && el.sentMessageId === currentUser.profile.id ?
-                    <div id="chat-message-box-current">{el.text}</div>
-                    : <div id="chat-message-box-other">{el.text}</div>
-                }
+                {el.sentMessageId === currentUser.profile.id ?
+                  <div id="chat-message-box-current">{el.text}</div>
+                  : <div id="chat-message-box-other">{el.text}</div>}
               </div>
             </div>
           )

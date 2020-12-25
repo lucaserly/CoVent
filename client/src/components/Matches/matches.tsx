@@ -7,14 +7,11 @@ export const Matches = (): JSX.Element => {
   const currentUser = useSelector((state: RootState) => state.user)
   return (
     <>
-      {
-        currentUser.profile &&
-        currentUser.profile.matched &&
+      {currentUser.profile.matched &&
         currentUser.profile.matched.map((el: Profile, i: number) =>
           <div key={i} className="image_container">
             <img src={el.picture} className="searchbar_image" alt="profile pic" />
-          </div>
-        )}
+          </div>)}
     </>
   )
 }

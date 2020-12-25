@@ -1,5 +1,31 @@
 import { UserActionTypes, SET_USER, } from '../../types/user/userActions';
-import { User, Profile, Swipe, Match } from '../../types/user';
+import { User, Profile, Swipe, Match, Category, City } from '../../types/user';
+
+export const initialCityState: City = {
+  id: '',
+  name: '',
+  createdAt: '',
+  updatedAt: '',
+  cityProfiles: {
+    createdAt: '',
+    updatedAt: '',
+    cityId: undefined,
+    profileId: undefined
+  }
+}
+
+export const initialCategoryState: Category = {
+  id: undefined,
+  name: '',
+  createdAt: '',
+  updatedAt: '',
+  categoryProfiles: {
+    createdAt: '',
+    updatedAt: '',
+    categoryId: undefined,
+    profileId: undefined,
+  }
+}
 
 export const initialMatchesState: Match = {
   createdAt: '',
@@ -7,25 +33,6 @@ export const initialMatchesState: Match = {
   matched: undefined,
   partner: undefined,
 }
-
-// export const initialMatchedState: Profile = {
-//   id: undefined,
-//   picture: '',
-//   description: '',
-//   age: '',
-//   gender: '',
-//   location: '',
-//   userId: undefined,
-//   hasNewMatch: false,
-//   user: {
-//     id: undefined,
-//     firstName: '',
-//     lastName: '',
-//     email: '',
-
-//   },
-//   matches: initialMatchesState
-// }
 
 export const initialSwipesState: Swipe = {
   id: undefined,
@@ -45,8 +52,11 @@ export const initialReceivedLikeState: Profile = {
   userId: undefined,
   hasNewMatch: false,
   receivedLike: [],
+  likedProfile: [],
   swipes: [initialSwipesState],
-  matches: initialMatchesState
+  matches: initialMatchesState,
+  categories: [initialCategoryState],
+  cities: [initialCityState]
 }
 
 export const initialProfileState: Profile = {
@@ -59,9 +69,11 @@ export const initialProfileState: Profile = {
   hasNewMatch: false,
   userId: undefined,
   receivedLike: [initialReceivedLikeState],
+  likedProfile: [initialReceivedLikeState],
   swipes: [initialSwipesState],
-  // matched: [initialMatchedState],
-  matches: initialMatchesState
+  matches: initialMatchesState,
+  categories: [initialCategoryState],
+  cities: [initialCityState]
 }
 
 export const initialUserState: User = {

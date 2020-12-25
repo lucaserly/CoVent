@@ -1,12 +1,12 @@
 export interface Category {
-  id: number,
+  id: number | undefined,
   name: string,
   createdAt: string,
   updatedAt: string,
   categoryProfiles: {
     createdAt: string,
     updatedAt: string,
-    categoryId: number,
-    profileId: number,
+    categoryId: number | undefined,
+    profileId: number | undefined,
   }
 }

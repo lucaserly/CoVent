@@ -21,7 +21,7 @@ export const LandingPage = (): ReactElement => {
       .then((list) => {
         const filteredList = list.filter((el) => el.id !== currentUser.id)
         setProfiles(filteredList)
-        if (currentDirection.length && currentUser.profile && currentUser.profile.id) {
+        if (currentUser.profile.id) {
           sendLikesToBackEnd(currentDirection, currentUser.profile.id)
         }
       })

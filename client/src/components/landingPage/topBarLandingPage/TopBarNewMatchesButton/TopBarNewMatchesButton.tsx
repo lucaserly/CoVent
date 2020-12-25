@@ -7,7 +7,7 @@ const USER_MATCHES_BUTTON_TEXT = 'Matches'
 
 export const TopBarNewMatchesButton = (): ReactElement => {
   const userIsLoggedIn = useSelector((state: RootState) => state.system.loggedIn)
-  const userHasNewMatches = useSelector((state: RootState) => state.user.profile?.hasNewMatch)
+  const userHasNewMatches = useSelector((state: RootState) => state.user.profile.hasNewMatch)
   const changeOnNewMatches = userHasNewMatches ? 'hasNewMatches' : 'noNewMatches'
 
   return (<div
