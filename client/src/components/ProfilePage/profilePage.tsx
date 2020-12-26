@@ -4,10 +4,10 @@ import { RootState } from '../../types/combinedStoreTypes';
 import { Button } from 'react-bootstrap';
 import { addLike } from '../../utils/systemFunction';
 import { Link } from 'react-router-dom';
-import { getAllProfiles } from './../../utils/userDatabaseFetch';
+import { getAllProfiles, getUserById } from './../../utils/userDatabaseFetch';
 import './profilePage.css';
-import { Profile } from '../../types/user';
-import { initialProfileState } from './../../redux/userState/userReducer';
+import { User, Profile } from '../../types/user';
+import { initialUserState, initialProfileState } from './../../redux/userState/userReducer';
 import { CategoriesList } from './categoriesList';
 import { MyMatches } from './myMatches';
 import { InvitationsSent } from './invitationsSent';
@@ -26,8 +26,15 @@ export const ProfilePage = (): JSX.Element => {
   const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
+  const [updatedUser, setUpdatedUser] = useState<User>(initialUserState)
+
   useEffect(() => {
-    setReceivedLikes(user.profile.receivedLike)
+    if (user.id) {
+      getUserById(user.id.toString())
+        .then((user) => {
+          setUpdatedUser(user[0])
+        })
+    }
     getAllProfiles()
       .then((list) => {
         const filteredList = list.filter((el) => el.id !== user.id)
@@ -60,10 +67,10 @@ export const ProfilePage = (): JSX.Element => {
     if (filteredByCityAndActivity) {
       const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
       const filteredByPreviousSwipes = user.profile.swipes.length > 0 ? filterByMultipleCriterias(filteredByCityActivitySelf, user.profile, 'swipes', 'id', 'swipeId') : filteredByCityActivitySelf;
-      if (filteredByPreviousSwipes.length > 0 && (user.profile.swipes.length > 0 || currentDir.length > 0)) {
+      if (filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0 && (user.profile.swipes.length > 0 || currentDir.length > 0)) {
         return filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g)
       } else {
-        if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes.length > 0) {
+        if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0) {
           return filterByMultipleCriterias(filteredByCityAndActivity, user.profile, 'matched', 'id', 'id')
         } else {
           return filteredByPreviousSwipes
@@ -73,8 +80,9 @@ export const ProfilePage = (): JSX.Element => {
   };
 
   return (
-
     <div id="profile_body">
+      {/* {console.log('receivedLikes-->', receivedLikes)}
+      {console.log('currentDirection-->', currentDirection)} */}
       <CategoriesList />
       <div className="profile_page_content">
         <div className="profile_page_header_container">
@@ -87,29 +95,15 @@ export const ProfilePage = (): JSX.Element => {
               <div id="user-age">{user.profile.age} years old</div>
               <div id="selected-city">{user.profile.cities.length > 0 && user.profile.cities[0].name}</div>
               <div id="selected-city">{user.profile.categories.length > 0 && user.profile.categories[0].name}</div>
-
-              <Link to={{
-                pathname: '/chats',
-                state: {
-                  matches: user.profile.matched
-                }
-              }}>
+              <Link to={{ pathname: '/chats', state: { matches: user.profile.matched } }}>
                 <Button id="chats-link-btn">Chat Room</Button>
               </Link>
-
               <Link to="/matches">
                 <Button id="chats-link-btn">Matches</Button>
               </Link>
-
-              <Link to={{
-                pathname: '/swiping',
-                state: {
-                  profiles: filterSwipedProfiles(profiles, currentDirection),
-                }
-              }}>
+              <Link to={{ pathname: '/swiping', state: { profiles: filterSwipedProfiles(profiles, currentDirection) } }}>
                 <Button id="chats-link-btn">Swiping</Button>
               </Link>
-
             </div>
           </div>
 
@@ -118,17 +112,16 @@ export const ProfilePage = (): JSX.Element => {
             <Button variant="primary" onClick={handleShowCity} className="city_add">Pick a city</Button>
           </div>
         </div>
-
         <div id="profile-page-body">
-          <MyMatches />
+          <MyMatches matches={updatedUser.profile.matched} />
           <div id="invitations-grid-area">
             <div className="invitations-container" id="invitations-sent">
               <div className="invitations-container-title">You have invited them</div>
-              <InvitationsSent listA={user.profile.likedProfile} listB={user.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} />
+              <InvitationsSent listA={updatedUser.profile.likedProfile} listB={updatedUser.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} />
             </div>
             <div className="invitations-container" id="invitations-received">
               <div className="invitations-container-title">They have invited you</div>
-              <InvitationsReceived listA={receivedLikes} listB={user.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} setReceivedLikes={setReceivedLikes}
+              <InvitationsReceived listA={updatedUser.profile.receivedLike} listB={updatedUser.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} setReceivedLikes={setReceivedLikes}
                 sendLikesToBackEnd={sendLikesToBackEnd} />
             </div>
           </div>
@@ -138,4 +131,4 @@ export const ProfilePage = (): JSX.Element => {
       </div>
     </div>
   )
-}
+};

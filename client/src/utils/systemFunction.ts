@@ -135,7 +135,7 @@ export const addCategoryToProfile = (category: { profileId: number, name: string
     }
 };
 
-export const addSwipeToProfile = (swipe: { profileId: number, swipeId: number }): void => {
+export const addSwipeToProfile = (swipe: { profileId: number, swipeId: number, direction: string }): void => {
     addSwipe(swipe);
 };
 

@@ -133,7 +133,7 @@ export const addCategory = (category: { profileId: number, name: string }): Prom
   })
 }
 
-export const addSwipe = (swipe: { profileId: number, swipeId: number }): Promise<Swipe> => {
+export const addSwipe = (swipe: { profileId: number, swipeId: number, direction: string }): Promise<Swipe> => {
   return fetchRequest(`/swipe`, {
     method: "POST",
     headers: {

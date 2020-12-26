@@ -4,21 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../types/combinedStoreTypes';
 import { CityAdd } from '../../types/user';
 import { addCityToProfile } from '../../utils/systemFunction';
+import { firstLetterUpper } from './helperFunctions';
 
 export const ModalAddCity = (props: { showCityModal: boolean, setShowCityModal: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
 
   const { showCityModal, setShowCityModal } = props;
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-
   const handleCloseCity = () => setShowCityModal(false);
   const [city, setCity] = useState('');
 
-    const firstLetterUpper = (str: string): string => {
-      const arr = str.split('')
-      arr[0] = arr[0].toUpperCase()
-      return arr.join('')
-    };
+
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>, cb: React.Dispatch<React.SetStateAction<string>>) => {
     cb(ev.target.value)

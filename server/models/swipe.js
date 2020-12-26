@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    direction: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
   swipe.associate = model => {
     swipe.belongsTo(model.profile);

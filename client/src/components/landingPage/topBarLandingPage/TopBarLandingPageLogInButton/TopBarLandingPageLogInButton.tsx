@@ -24,7 +24,8 @@ export const TopBarLandingPageLogInButton = ({ setShowModal }: TopBarSignInButto
         if (swipeValue) {
           const swipeToSend = {
             profileId: currentUser.profile.id,
-            swipeId: Number(swipeValue[0])
+            swipeId: Number(swipeValue[0]),
+            direction: String(el.match(/[^\s]+/))
           }
           addSwipeToProfile(swipeToSend)
         }
