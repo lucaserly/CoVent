@@ -3,7 +3,8 @@ import { Profile } from '../../types/user';
 import { ButtonInvitations } from './buttonInvitations';
 
 interface CallBack {
-  (obj: Profile[]): Profile[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (aList: any, bList: any, criteria: string, propertyA: string, propertyB: string | object): Profile[]   // eslint-disable-line @typescript-eslint/ban-types
 }
 
 interface SendLikesToBackEnd {
@@ -11,13 +12,14 @@ interface SendLikesToBackEnd {
 }
 
 export const InvitationsReceived = (props: {
-  list: Profile[], cb: CallBack, setReceivedLikes: Dispatch<SetStateAction<Profile[]>>,
+  listA: Profile[], listB: Profile, criteria: string, propertyA: string,
+  propertyB: string, cb: CallBack, setReceivedLikes: Dispatch<SetStateAction<Profile[]>>,
   sendLikesToBackEnd: SendLikesToBackEnd
 }): JSX.Element => {
-  const { list, cb, setReceivedLikes, sendLikesToBackEnd } = props;
+  const { listA, listB, criteria, propertyA, propertyB, cb, setReceivedLikes, sendLikesToBackEnd } = props;
   return (
     <div className="invitations-list">
-      {cb(list).map((el: Profile, i: number) => {
+      {cb(listA, listB, criteria, propertyA, propertyB).map((el: Profile, i: number) => {
         return (
           <div id="invitor-area" key={i}>
             <img className="invitor-img" src={el.picture} alt="invitor" />

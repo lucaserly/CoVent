@@ -14,13 +14,13 @@ import { InvitationsSent } from './invitationsSent';
 import { InvitationsReceived } from './invitationsReceived';
 import { ModalAddCity } from './modalAddCity';
 import { ModalEditProfile } from './modalEditProfile';
+import { filterByCriteria, filterByMultipleCriterias } from './helperFunctions';
 
 export const ProfilePage = (): JSX.Element => {
 
   const user = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const dispatch = useDispatch();
-
   const [show, setShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
@@ -42,104 +42,6 @@ export const ProfilePage = (): JSX.Element => {
   const handleShow = () => setShow(true);
   const handleShowCity = () => setShowCityModal(true);
 
-  const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | void => {
-    const filteredByCity = filterByCriteria(profiles, user.profile, 'cities', 'name');
-    const filteredByCityAndActivity = filterByCriteria(filteredByCity, user.profile, 'categories', 'name');
-
-    if (filteredByCityAndActivity) {
-      const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
-      let filteredByPreviousSwipes = [];
-      if (user.profile.swipes.length > 0) {
-        for (let a = 0; a < filteredByCityActivitySelf.length; a++) {
-          let flag;
-          for (let c = 0; c < user.profile.swipes.length; c++) {
-            if (Number(user.profile.swipes[c].swipeId) === filteredByCityActivitySelf[a].id) {
-              flag = true;
-              break;
-            }
-          }
-          if (!flag) {
-            filteredByPreviousSwipes.push(filteredByCityActivitySelf[a])
-          }
-          else {
-            flag = false;
-          }
-        }
-      } else {
-        filteredByPreviousSwipes = filteredByCityActivitySelf
-      }
-
-      if (filteredByPreviousSwipes.length > 0 && (user.profile.swipes.length > 0 || currentDir.length > 0)) {
-        const result = [];
-        for (let i = 0; i < filteredByPreviousSwipes.length; i++) {
-          let flag;
-          for (let a = 0; a < currentDir.length; a++) {
-            if (Number(currentDir[a].match(/\d+/g)) === filteredByPreviousSwipes[i].id) {
-              flag = true;
-              break;
-            }
-          }
-          if (!flag) {
-            result.push(filteredByPreviousSwipes[i]);
-          } else {
-            flag = false;
-          }
-        }
-        return result;
-      }
-      else {
-        const filteredByNotMatchedYet = [];
-        if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes.length > 0) {
-          for (let i = 0; i < filteredByCityAndActivity.length; i++) {
-            let flag;
-            for (let a = 0; a < user.profile.matched.length; a++) {
-              if (Number(user.profile.matched[a].id) === Number(filteredByCityAndActivity[i].id)) {
-                flag = true;
-                break;
-              }
-            }
-            if (!flag) {
-              filteredByNotMatchedYet.push(filteredByCityAndActivity[i])
-            } else {
-              flag = false;
-            }
-          }
-          return filteredByNotMatchedYet;
-        } else {
-          return filteredByPreviousSwipes
-        }
-      }
-    }
-  };
-
-  const filterByCriteria = (a: any, b: any, criteria: string, property: string): Profile[] => { // eslint-disable-line @typescript-eslint/no-explicit-any
-    const res = a.filter((el: any): boolean => {                                                // eslint-disable-line @typescript-eslint/no-explicit-any
-      return el[criteria][0][property] === b[criteria][0][property]
-    })
-    return res
-  };
-
-  const filterNotMatchedYet = (obj: Profile[]): Profile[] => {
-    const filteredByNotMatchedYet = [];
-    if (user.profile.matched && obj.length > 0) {
-      for (let i = 0; i < obj.length; i++) {
-        let flag;
-        for (let a = 0; a < user.profile.matched.length; a++) {
-          if (Number(user.profile.matched[a].id) === Number(obj[i].id)) {
-            flag = true;
-            break;
-          }
-        }
-        if (!flag) {
-          filteredByNotMatchedYet.push(obj[i])
-        } else {
-          flag = false;
-        }
-      }
-    }
-    return filteredByNotMatchedYet;
-  };
-
   const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
     currentDir.forEach((el) => {
       if (String(el.match(/[^\s]+/)) === 'right') {
@@ -152,7 +54,23 @@ export const ProfilePage = (): JSX.Element => {
     })
   };
 
-
+  const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | void => {
+    const filteredByCity = filterByCriteria(profiles, user.profile, 'cities', 'name');
+    const filteredByCityAndActivity = filterByCriteria(filteredByCity, user.profile, 'categories', 'name');
+    if (filteredByCityAndActivity) {
+      const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
+      const filteredByPreviousSwipes = user.profile.swipes.length > 0 ? filterByMultipleCriterias(filteredByCityActivitySelf, user.profile, 'swipes', 'id', 'swipeId') : filteredByCityActivitySelf;
+      if (filteredByPreviousSwipes.length > 0 && (user.profile.swipes.length > 0 || currentDir.length > 0)) {
+        return filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g)
+      } else {
+        if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes.length > 0) {
+          return filterByMultipleCriterias(filteredByCityAndActivity, user.profile, 'matched', 'id', 'id')
+        } else {
+          return filteredByPreviousSwipes
+        }
+      }
+    }
+  };
 
   return (
 
@@ -206,11 +124,11 @@ export const ProfilePage = (): JSX.Element => {
           <div id="invitations-grid-area">
             <div className="invitations-container" id="invitations-sent">
               <div className="invitations-container-title">You have invited them</div>
-              <InvitationsSent list={user.profile.likedProfile} cb={filterNotMatchedYet} />
+              <InvitationsSent listA={user.profile.likedProfile} listB={user.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} />
             </div>
             <div className="invitations-container" id="invitations-received">
               <div className="invitations-container-title">They have invited you</div>
-              <InvitationsReceived list={receivedLikes} cb={filterNotMatchedYet} setReceivedLikes={setReceivedLikes}
+              <InvitationsReceived listA={receivedLikes} listB={user.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} setReceivedLikes={setReceivedLikes}
                 sendLikesToBackEnd={sendLikesToBackEnd} />
             </div>
           </div>

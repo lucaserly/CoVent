@@ -7,8 +7,6 @@ import { City } from './city';
 import { Swipe } from './swipe';
 
 export type Profile = {
-  [key in string | number]: string | undefined | number | boolean | Profile[] | User | LikedProfile | ReceivedLike | Match | Category[] | City[] | Swipe[];
-} & {
   id?: number;
   picture: string;
   description: string;

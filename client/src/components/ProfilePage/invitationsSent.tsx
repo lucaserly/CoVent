@@ -2,14 +2,16 @@ import React from 'react';
 import { Profile } from '../../types/user';
 
 interface CallBack {
-  (obj: Profile[]): Profile[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (aList: any, bList: any, criteria: string, propertyA: string, propertyB: string | object): Profile[]   // eslint-disable-line @typescript-eslint/ban-types
 }
 
-export const InvitationsSent = (props: { list: Profile[], cb: CallBack }): JSX.Element => {
-  const { list, cb } = props;
+export const InvitationsSent = (props: { listA: Profile[], listB: Profile, criteria: string, propertyA: string,
+  propertyB: string, cb: CallBack }): JSX.Element => {
+  const { listA, listB, criteria, propertyA, propertyB, cb } = props;
   return (
     <div className="invitations-list">
-      {cb(list).map((el: Profile, i: number) => {
+      {cb(listA, listB, criteria, propertyA, propertyB).map((el: Profile, i: number) => {
         return (
           <div id="invitor-area" key={i}>
             <img className="invitor-img" src={el.picture} alt="invitor" />
