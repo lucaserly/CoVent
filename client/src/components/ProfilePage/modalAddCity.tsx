@@ -14,8 +14,6 @@ export const ModalAddCity = (props: { showCityModal: boolean, setShowCityModal: 
   const handleCloseCity = () => setShowCityModal(false);
   const [city, setCity] = useState('');
 
-
-
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>, cb: React.Dispatch<React.SetStateAction<string>>) => {
     cb(ev.target.value)
   };

@@ -141,12 +141,12 @@ export const addSwipeToProfile = (swipe: { profileId: number, swipeId: number, d
 
 export const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
     currentDir.forEach((el) => {
-      if (String(el.match(/[^\s]+/)) === 'right') {
-        const res: RegExpMatchArray | null = el.match(/\d+/g)
-        res && (addLike({
-          profileId: profileId,
-          givenLikeId: +res
-        }))
-      }
+        if (String(el.match(/[^\s]+/)) === 'right') {
+            const res: RegExpMatchArray | null = el.match(/\d+/g)
+            res && (addLike({
+                profileId: profileId,
+                givenLikeId: +res
+            }))
+        }
     })
-  };
+};

@@ -31,7 +31,6 @@ const like = async (req, res) => {
 
       await profile[0].addLikedProfile(givenLikeId, profileId);
       await likedProfile[0].addReceivedLike(profileId, givenLikeId);
-
       const targetProfile = await helperFuncs.findProfile(models, values[1], 'profile');
 
       if (targetProfile[0].dataValues.likedProfile.length > 0) {

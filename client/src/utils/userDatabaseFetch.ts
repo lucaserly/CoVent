@@ -7,7 +7,7 @@ export const getAllUsers = (): Promise<User[]> => {
       Accept: "application/json",
     }
   })
-};
+}
 
 export function getUserByEmailAndPassword(email: string, password: string): Promise<User> {
   return fetchRequest(`/login`, {
@@ -85,7 +85,7 @@ export const updateUserProfileData = (updatedUserProfile: Profile): Promise<Resp
     },
     body: JSON.stringify(updatedUserProfile),
   })
-};
+}
 
 export const getAllCities = (): Promise<City[]> => {
   return fetchRequest(`/cities`, {
@@ -93,7 +93,7 @@ export const getAllCities = (): Promise<City[]> => {
       Accept: "application/json",
     },
   })
-};
+}
 
 export const getAllProfiles = (): Promise<Profile[]> => {
   return fetchRequest(`/profiles`, {
@@ -101,7 +101,7 @@ export const getAllProfiles = (): Promise<Profile[]> => {
       Accept: "application/json",
     },
   })
-};
+}
 
 export const addCity = (city: CityAdd): Promise<City> => {
   return fetchRequest(`/city`, {
@@ -111,7 +111,7 @@ export const addCity = (city: CityAdd): Promise<City> => {
     },
     body: JSON.stringify(city),
   })
-};
+}
 
 export const giveLike = (like: LikeProfile): Promise<User[]> => {
   return fetchRequest(`/like/give`, {
@@ -121,7 +121,7 @@ export const giveLike = (like: LikeProfile): Promise<User[]> => {
     },
     body: JSON.stringify(like),
   })
-};
+}
 
 export const addCategory = (category: { profileId: number, name: string }): Promise<Category> => {
   return fetchRequest(`/category`, {
@@ -141,7 +141,7 @@ export const addSwipe = (swipe: { profileId: number, swipeId: number, direction:
     },
     body: JSON.stringify(swipe)
   })
-};
+}
 
 export const addMsg = (msg: Messaged): Promise<Response> => {
   return fetchRequest(`/message`, {
@@ -151,7 +151,7 @@ export const addMsg = (msg: Messaged): Promise<Response> => {
     },
     body: JSON.stringify(msg)
   })
-};
+}
 
 export const getAllMsgs = (): Promise<Message[]> => {
   return fetchRequest(`/messages`, {

@@ -1,10 +1,7 @@
 import React from 'react';
-// import { useSelector } from "react-redux";
-// import { RootState } from '../../types/combinedStoreTypes';
 import { Profile } from '../../types/user';
 
 export const MyMatches = (props: { matches: Profile[] | undefined }): JSX.Element => {
-  // const user = useSelector((state: RootState) => state.user)
   const { matches } = props;
   return (
     <div id="my-matches-area">
