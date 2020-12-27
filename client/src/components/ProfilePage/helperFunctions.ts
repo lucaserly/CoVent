@@ -33,6 +33,9 @@ const accessProperty = (el: any, criteria: string): Profile[] => {
 const filterByMultipleCriterias = (aList: any, bList: any, criteria: string, propertyA: string, propertyB: string | object): Profile[] => {
   const result = [];
     const bElement = accessProperty(bList, criteria);
+    // console.log('bElement-->', bElement);
+    // console.log('aList-->', aList);
+
     for (let i = 0; i < aList.length; i++) {
       let flag;
       for (let a = 0; a < bElement.length; a++) {
@@ -47,6 +50,8 @@ const filterByMultipleCriterias = (aList: any, bList: any, criteria: string, pro
         flag = false;
       }
     }
+    // console.log('result-->', result);
+
     return result;
 };
 

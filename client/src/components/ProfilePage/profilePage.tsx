@@ -26,7 +26,7 @@ export const ProfilePage = (): JSX.Element => {
 
   const [show, setShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
-  const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
+  const [receivedLikes, setReceivedLikes] = useState<Profile[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
   const [updatedUser, setUpdatedUser] = useState<User>(initialUserState)
@@ -34,12 +34,14 @@ export const ProfilePage = (): JSX.Element => {
   useEffect(() => {
     console.log('PROFILE USEFFECT-->');
     if (user.id && user.profile.id) {
-      console.log('currentDirection-->', currentDirection);
+      // console.log('currentDirection-->', currentDirection);
       sendLikesToBackEnd(currentDirection, user.profile.id)
       getUserById(user.id.toString())
         .then((user) => {
-          dispatch(setUser(user[0]))
           setReceivedLikes(user[0].profile.receivedLike)
+          console.log('user[0].profile.receivedLike-->', user[0].profile.receivedLike);
+
+          dispatch(setUser(user[0]))
         })
     }
     getAllProfiles()
@@ -68,30 +70,30 @@ export const ProfilePage = (): JSX.Element => {
   };
 
   const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | undefined => {
-    // console.log('INSIDE FILTER SWIPED PROFILES-->');
-    // console.log('PARAMETER 1 profiles-->', profiles);
-    // console.log('PARAMETER 2 currentDir-->', currentDir);
+    console.log('INSIDE FILTER SWIPED PROFILES-->');
+    console.log('PARAMETER 1 profiles-->', profiles);
+    console.log('PARAMETER 2 currentDir-->', currentDir);
 
     const filteredByCity = filterByCriteria(profiles, user.profile, 'cities', 'name');
-    // console.log('1 --> filteredByCity-->', filteredByCity);
+    console.log('1 --> filteredByCity-->', filteredByCity);
 
     const filteredByCityAndActivity = filterByCriteria(filteredByCity, user.profile, 'categories', 'name');
-    // console.log('2 --> filteredByCityAndActivity-->', filteredByCityAndActivity);
+    console.log('2 --> filteredByCityAndActivity-->', filteredByCityAndActivity);
     if (filteredByCityAndActivity) {
-      // console.log('INSIDE FIRST IF-->');
+      console.log('INSIDE FIRST IF-->');
 
       const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
-      // console.log('3 --> filteredByCityActivitySelf-->', filteredByCityActivitySelf);
+      console.log('3 --> filteredByCityActivitySelf-->', filteredByCityActivitySelf);
       const filteredByPreviousSwipes = user.profile.swipes.length > 0 ? filterByMultipleCriterias(filteredByCityActivitySelf, user.profile, 'swipes', 'id', 'swipeId') : filteredByCityActivitySelf;
-      // console.log('4 --> filteredByPreviousSwipes-->', filteredByPreviousSwipes);
+      console.log('4 --> filteredByPreviousSwipes-->', filteredByPreviousSwipes);
       // console.log('user.profile.swipes-->', user.profile.swipes);
 
       if (filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0 && currentDir.length > 0) {
         // console.log('filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, id)-->', filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g));
         // console.log('filteredByPreviousSwipes-->', filteredByPreviousSwipes);
-        // console.log('currentDir-->', currentDir);
+        console.log('currentDir-->', currentDir);
         const filteredByCityActivitySelfPreviousSwipeCurrentDirection = filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g)
-        // console.log('filteredByCityActivitySelfPreviousSwipeCurrentDirection-->', filteredByCityActivitySelfPreviousSwipeCurrentDirection);
+        console.log('filteredByCityActivitySelfPreviousSwipeCurrentDirection-->', filteredByCityActivitySelfPreviousSwipeCurrentDirection);
         return filteredByCityActivitySelfPreviousSwipeCurrentDirection
       } else {
         if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0) {
