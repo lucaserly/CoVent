@@ -15,12 +15,15 @@ import { InvitationsReceived } from './invitationsReceived';
 import { ModalAddCity } from './modalAddCity';
 import { ModalEditProfile } from './modalEditProfile';
 import { filterByCriteria, filterByMultipleCriterias } from './helperFunctions';
+import { setUser } from '../../redux/userState/userActions';
+
 
 export const ProfilePage = (): JSX.Element => {
 
   const user = useSelector((state: RootState) => state.user)
   const currentDirection = useSelector((state: RootState) => state.direction)
   const dispatch = useDispatch();
+
   const [show, setShow] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
   const [receivedLikes, setReceivedLikes] = useState<Profile[]>([initialProfileState]);
@@ -32,19 +35,22 @@ export const ProfilePage = (): JSX.Element => {
     if (user.id) {
       getUserById(user.id.toString())
         .then((user) => {
-          setUpdatedUser(user[0])
+          dispatch(setUser(user[0]))
+          setReceivedLikes(user[0].profile.receivedLike)
         })
     }
     getAllProfiles()
       .then((list) => {
         const filteredList = list.filter((el) => el.id !== user.id)
+        // console.log('USE EFFECT-->');
+        // console.log('filteredList-->', filteredList);
         setProfiles(filteredList)
         if (user.profile.id) {
           sendLikesToBackEnd(currentDirection, user.profile.id)
         }
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentDirection]);
 
   const handleShow = () => setShow(true);
   const handleShowCity = () => setShowCityModal(true);
@@ -61,21 +67,43 @@ export const ProfilePage = (): JSX.Element => {
     })
   };
 
-  const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | void => {
+  const filterSwipedProfiles = (profiles: Profile[], currentDir: string[]): Profile[] | undefined => {
+    console.log('INSIDE FILTER SWIPED PROFILES-->');
+    console.log('PARAMETER 1 profiles-->', profiles);
+    console.log('PARAMETER 2 currentDir-->', currentDir);
+
     const filteredByCity = filterByCriteria(profiles, user.profile, 'cities', 'name');
+    console.log('1 --> filteredByCity-->', filteredByCity);
+
     const filteredByCityAndActivity = filterByCriteria(filteredByCity, user.profile, 'categories', 'name');
+    console.log('2 --> filteredByCityAndActivity-->', filteredByCityAndActivity);
     if (filteredByCityAndActivity) {
+      console.log('INSIDE FIRST IF-->');
+
       const filteredByCityActivitySelf = filteredByCityAndActivity.filter((el: Profile) => el.id !== user.id)
+      console.log('3 --> filteredByCityActivitySelf-->', filteredByCityActivitySelf);
       const filteredByPreviousSwipes = user.profile.swipes.length > 0 ? filterByMultipleCriterias(filteredByCityActivitySelf, user.profile, 'swipes', 'id', 'swipeId') : filteredByCityActivitySelf;
-      if (filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0 && (user.profile.swipes.length > 0 || currentDir.length > 0)) {
-        return filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g)
+      console.log('4 --> filteredByPreviousSwipes-->', filteredByPreviousSwipes);
+      // console.log('user.profile.swipes-->', user.profile.swipes);
+
+      if (filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0 && currentDir.length > 0) {
+        // console.log('filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, id)-->', filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g));
+        // console.log('filteredByPreviousSwipes-->', filteredByPreviousSwipes);
+        console.log('currentDir-->', currentDir);
+        const filteredByCityActivitySelfPreviousSwipeCurrentDirection = filterByMultipleCriterias(filteredByPreviousSwipes, currentDir, '', 'id', /\d+/g)
+        console.log('filteredByCityActivitySelfPreviousSwipeCurrentDirection-->', filteredByCityActivitySelfPreviousSwipeCurrentDirection);
+        return filteredByCityActivitySelfPreviousSwipeCurrentDirection
       } else {
         if (user.profile.matched && user.profile.matched.length > 0 && filteredByCityAndActivity.length !== 0 && filteredByPreviousSwipes && filteredByPreviousSwipes.length > 0) {
           return filterByMultipleCriterias(filteredByCityAndActivity, user.profile, 'matched', 'id', 'id')
         } else {
+          // console.log('filteredByPreviousSwipes-->', filteredByPreviousSwipes);
+
           return filteredByPreviousSwipes
         }
       }
+    } else {
+      return [];
     }
   };
 
@@ -83,6 +111,9 @@ export const ProfilePage = (): JSX.Element => {
     <div id="profile_body">
       {/* {console.log('receivedLikes-->', receivedLikes)}
       {console.log('currentDirection-->', currentDirection)} */}
+      {/* {console.log('profiles-->', profiles)}
+      {console.log('currentDirection-->', currentDirection)} */}
+      {/* {console.log('filterSwipedProfiles(profiles, currentDirection)-->', filterSwipedProfiles(profiles, currentDirection))} */}
       <CategoriesList />
       <div className="profile_page_content">
         <div className="profile_page_header_container">
@@ -113,15 +144,32 @@ export const ProfilePage = (): JSX.Element => {
           </div>
         </div>
         <div id="profile-page-body">
-          <MyMatches matches={updatedUser.profile.matched} />
+
+
+          {/* FOR TOMORROW I GOTTA FIX THE FACK THAT WHEN I SWIPE AND UPDATE CURRENT DIRECTION AND USE LOCAL UPDATEDUSER IT DOESN'T RERENDER
+          SO I WAS THINKING TO CHECK CURRENTDIRECTION IN MYMATCHES + INVITATIONS COMPONENTS SO TO RERENDER
+          I NEED UPDATEDUSER IN ORDER TO GET MOST UPDATED MATCHES WHEN TWO USERS ARE SIMUNTANEOUSLY LOGGED
+          IN OTHERWISE THE USER HAS TO LOG OUT AND LOG BACK IN TO GET UPDATED INFORMATION */}
+
+          {/* CURRENTDIRECTION WAS IMPLEMENTED WITH REDUX BECAUSE I COULDN'T PASS IT DOWN VIA LINK TO SWIPE COMPONENET WITH USESTATE */}
+
+          {/* AS SOON AS I SWIPE I WOULD CHECK IN INVITATIONSRECEIVED COMPONENET THE CURRENTDIRECTION LENGTH AND ADD THE  */}
+
+
+          {/* I COULD USE CONTEXT TO PASS DOWN ALL THE PROPS TO INVITATIONSSENT AND INVITATIONSRECEIVED */}
+          {/* REFACTOR EVERYTHING WITH CONTEXT */}
+
+          {/* WHENEVER I GO INTO PROFILE I NEED UPDATED LIKEDPROFILES + RECEIVEDLIKES + MATCHES */}
+
+          <MyMatches matches={user.profile.matched} />
           <div id="invitations-grid-area">
             <div className="invitations-container" id="invitations-sent">
               <div className="invitations-container-title">You have invited them</div>
-              <InvitationsSent listA={updatedUser.profile.likedProfile} listB={updatedUser.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} />
+              <InvitationsSent listA={user.profile.likedProfile} listB={user.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} />
             </div>
             <div className="invitations-container" id="invitations-received">
               <div className="invitations-container-title">They have invited you</div>
-              <InvitationsReceived listA={updatedUser.profile.receivedLike} listB={updatedUser.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} setReceivedLikes={setReceivedLikes}
+              <InvitationsReceived listA={receivedLikes} listB={user.profile} criteria={'matched'} propertyA={'id'} propertyB={'id'} cb={filterByMultipleCriterias} setReceivedLikes={setReceivedLikes}
                 sendLikesToBackEnd={sendLikesToBackEnd} />
             </div>
           </div>

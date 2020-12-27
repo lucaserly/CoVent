@@ -45,7 +45,7 @@ export const InvitationsReceived = (props: {
 
   return (
     <div className="invitations-list">
-      {console.log('listToMap-->', listToMap)}
+      {/* {console.log('listToMap-->', listToMap)} */}
       {/* {console.log('listB.swipes-->', listB.swipes)}
       {console.log('currentDirection-->', currentDirection)} */}
       {listToMap ? listToMap.map((el: Profile, i: number) => {

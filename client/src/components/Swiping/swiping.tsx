@@ -9,7 +9,6 @@ import './swiping.css'
 export const Swiping = (prop: SwipeInterface): JSX.Element => {
   const dispatch = useDispatch();
   const profiles = prop.location.state.profiles
-
   return (
     <>
       <div className="cards__container">

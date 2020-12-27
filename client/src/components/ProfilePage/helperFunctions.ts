@@ -30,9 +30,8 @@ const accessProperty = (el: any, criteria: string): Profile[] => {
   }
 };
 
-const filterByMultipleCriterias = (aList: any, bList: any, criteria: string, propertyA: string, propertyB: string | object): Profile[] | undefined => {
+const filterByMultipleCriterias = (aList: any, bList: any, criteria: string, propertyA: string, propertyB: string | object): Profile[] => {
   const result = [];
-  if (bList.id) {
     const bElement = accessProperty(bList, criteria);
     for (let i = 0; i < aList.length; i++) {
       let flag;
@@ -49,7 +48,6 @@ const filterByMultipleCriterias = (aList: any, bList: any, criteria: string, pro
       }
     }
     return result;
-  }
 };
 
 const firstLetterUpper = (str: string): string => {

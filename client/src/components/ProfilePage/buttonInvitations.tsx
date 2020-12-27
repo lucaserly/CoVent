@@ -18,13 +18,13 @@ export const ButtonInvitations = (props: { el: Profile, setReceivedLikes: Dispat
   return (
     <div id="evaluate-invitation-btn">
       <Button id="accept-invitation-btn" onClick={(e) => {
+        dispatch(setDirection([`right id:${el.id}`]))
+        sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
         setReceivedLikes((prevList: Profile[]) => {
           return prevList.filter((element: Profile) => {
             return element.id !== el.id
           })
         })
-        dispatch(setDirection([`right id:${el.id}`]))
-        sendLikesToBackEnd([`right id:${el.id}`], Number(user.profile.id))
       }}>√</Button>
       <Button id="reject-invitation-btn" onClick={(e) => {
         setReceivedLikes((prevList: Profile[]) => {

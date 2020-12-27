@@ -196,7 +196,15 @@ export const getMsgsByProfileIdAndReceiverId = (profileId: number, receiverId: n
 const fetchRequest = (path: string, options?: RequestInit) => {
   return fetch(baseUrl + path, options)
     .then(res => res.status < 400 ? res : Promise.reject())
-    .then(res => res.status !== 204 ? res.json() : res)
+    .then(res => {
+      if (res.status !== 204) {
+        console.log('options-->', options);
+        console.log('res.status-->', res.status);
+        return res.json();
+      } else {
+        return res;
+      }
+    })
     .catch(err => {
       console.error('Error:', err);
     })

@@ -114,6 +114,7 @@ export const addCityToProfile = (city: CityAdd, user: User) => {
 
 export const addLike = (like: LikeProfile) => {
     return (dispatch: Dispatch<UserActionTypes>): void => {
+        console.log('like-->', like);
         giveLike(like)
             .then((newUser: User[]) => {
                 dispatch(setUser(newUser[0]))

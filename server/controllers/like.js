@@ -4,9 +4,14 @@ const models = require('../models');
 const helperFuncs = require('./../utils/helperFuncs');
 
 const like = async (req, res) => {
+  console.log('INSIDE SERVER LIKE-->');
 
   const { direction } = req.params;
   const { profileId } = req.body;
+  console.log('direction-->', direction);
+  console.log('req.body-->', req.body);
+
+
   const values = Object.values(req.body);
   const profile = await helperFuncs.findProfile(models, profileId, 'profile');
 
@@ -20,10 +25,13 @@ const like = async (req, res) => {
 
   try {
     if (direction === 'give') {
+      console.log('INSIDE IF GIVE-->');
+
       const { givenLikeId } = req.body;
       const likedProfile = await models.profile.findAll({
         where: { id: givenLikeId }
       });
+      console.log('likedProfile-->', likedProfile);
 
       if (likedProfile.length === 0) {
         return res.status(500).send({ error: '500', message: 'Liked profile not available' });
@@ -43,10 +51,12 @@ const like = async (req, res) => {
           await profile[0].addMatched(givenLikeId, profileId);
           await targetProfile[0].addMatched(profileId, givenLikeId);
           const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
+          console.log('updatedUser with MATCH-->', updatedUser);
           return res.status(201).send(updatedUser);
         }
       }
       const updatedUser = await helperFuncs.findUser(models, profile[0].dataValues.userId);
+      console.log('updatedUser-->', updatedUser);
       res.status(201).send(updatedUser);
     } else if (direction === 'receive') {
       const { receivedLikeId } = req.body;
