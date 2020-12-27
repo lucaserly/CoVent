@@ -114,7 +114,6 @@ export const addCityToProfile = (city: CityAdd, user: User) => {
 
 export const addLike = (like: LikeProfile) => {
     return (dispatch: Dispatch<UserActionTypes>): void => {
-        console.log('like-->', like);
         giveLike(like)
             .then((newUser: User[]) => {
                 dispatch(setUser(newUser[0]))
@@ -140,3 +139,14 @@ export const addSwipeToProfile = (swipe: { profileId: number, swipeId: number, d
     addSwipe(swipe);
 };
 
+export const sendLikesToBackEnd = (currentDir: string[], profileId: number): void => {
+    currentDir.forEach((el) => {
+      if (String(el.match(/[^\s]+/)) === 'right') {
+        const res: RegExpMatchArray | null = el.match(/\d+/g)
+        res && (addLike({
+          profileId: profileId,
+          givenLikeId: +res
+        }))
+      }
+    })
+  };
