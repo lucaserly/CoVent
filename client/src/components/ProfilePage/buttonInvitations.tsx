@@ -3,11 +3,14 @@ import { Profile } from '../../types/user';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
 import { setDirection } from '../../redux/directionState/directionActions';
+import { ProfilePageContext } from './profilePage';
+
 
 export const ButtonInvitations = (props: { el: Profile, setReceivedLikes: Dispatch<SetStateAction<Profile[]>> }): JSX.Element => {
 
   const { el, setReceivedLikes } = props;
   const dispatch = useDispatch();
+  const { receivedLikes, user, onFilterByMultipleCriterias, onSetReceivedLikes } = React.useContext(ProfilePageContext)
 
   return (
     <div id="evaluate-invitation-btn">

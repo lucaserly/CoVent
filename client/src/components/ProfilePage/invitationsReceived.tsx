@@ -1,9 +1,10 @@
-import React, { SetStateAction, Dispatch } from 'react';
+import React, { SetStateAction, Dispatch, useContext } from 'react';
 import { useSelector } from "react-redux";
 import { RootState } from '../../types/combinedStoreTypes';
 import { Profile } from '../../types/user';
 import { ButtonInvitations } from './buttonInvitations';
 import { filterByCondition } from './helperFunctions';
+import { ProfilePageContext } from './profilePage';
 
 interface CallBack {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,7 +16,9 @@ export const InvitationsReceived = (props: {
   propertyB: string, cb: CallBack, setReceivedLikes: Dispatch<SetStateAction<Profile[]>>
 }): JSX.Element => {
   const { listA, listB, criteria, propertyA, propertyB, cb, setReceivedLikes } = props;
+  const { receivedLikes, user, onFilterByMultipleCriterias, onSetReceivedLikes } = React.useContext(ProfilePageContext)
   const currentDirection = useSelector((state: RootState) => state.direction)
+
   const receivedLikesFilteredByMatched = cb(listA, listB, criteria, propertyA, propertyB)
   const receivedLikesFilteredByMatchedAndCurrentDirection = cb(receivedLikesFilteredByMatched, currentDirection, '', 'id', /\d+/g)
   const filteredByRejectedProfiles = filterByCondition(listB, 'swipes', 'direction', 'left')
